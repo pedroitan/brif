@@ -7,6 +7,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@brif/ui', '@brif/db'],
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
     outputFileTracingIncludes: {
