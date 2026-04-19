@@ -8,12 +8,14 @@
     "start": "dotenv -e ../../.env.local -- next start -p 3000",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "clean": "rm -rf .next .turbo node_modules"
+    "clean": "rm -rf .next .turbo node_modules",
+    "postinstall": "prisma generate --schema=../../packages/db/prisma/schema.prisma"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.1",
     "@brif/db": "workspace:*",
     "@brif/ui": "workspace:*",
+    "@prisma/client": "^5.22.0",
     "@vercel/blob": "^0.27.0",
     "bcryptjs": "^2.4.3",
     "next": "14.2.15",
@@ -34,6 +36,7 @@
     "eslint": "^8.57.1",
     "eslint-config-next": "14.2.15",
     "postcss": "^8.4.47",
+    "prisma": "^5.22.0",
     "tailwindcss": "^3.4.14",
     "typescript": "^5.6.3"
   }
