@@ -14,7 +14,6 @@ export type SidebarProject = {
 
 type AppSidebarProps = {
   projects: SidebarProject[];
-  activeProject: SidebarProject | null;
   user: { name?: string | null; email?: string | null; role?: string | null };
 };
 
@@ -44,8 +43,16 @@ function initials(name?: string | null): string {
     .toUpperCase();
 }
 
-export function AppSidebar({ projects, activeProject, user }: AppSidebarProps) {
+export function AppSidebar({ projects, user }: AppSidebarProps) {
   const pathname = usePathname();
+  
+  // Derive active project from pathname
+  const activeProject = (() => {
+    const match = pathname.match(/^\/projetos\/([^/]+)/);
+    const id = match?.[1];
+    if (!id || id === 'novo') return null;
+    return projects.find((p) => p.id === id) ?? null;
+  })();
   return (
     <aside className="flex w-[220px] min-w-[220px] flex-col overflow-y-auto border-r border-white/5 bg-brif-navy-2">
       {/* Card do projeto ativo */}
