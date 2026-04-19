@@ -8,7 +8,7 @@ async function main() {
 
   const demoManager = await prisma.user.upsert({
     where: { email: 'gerente@agenciademo.com.br' },
-    update: { passwordHash },
+    update: { passwordHash, name: 'Gabriel Queiroz' },
     create: {
       email: 'gerente@agenciademo.com.br',
       name: 'Gabriel Queiroz',
