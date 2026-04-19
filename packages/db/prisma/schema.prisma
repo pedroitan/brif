@@ -2,7 +2,8 @@
 // Vamos evoluir para schema-per-tenant quando o app real começar.
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
