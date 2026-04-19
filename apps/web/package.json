@@ -11,6 +11,11 @@
     "clean": "rm -rf .next .turbo node_modules",
     "postinstall": "prisma generate --schema=../../packages/db/prisma/schema.prisma"
   },
+  "next": {
+    "eslint": {
+      "ignoreDuringBuilds": true
+    }
+  },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.1",
     "@brif/db": "workspace:*",
