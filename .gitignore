@@ -39,6 +39,9 @@ packages/db/prisma/migrations/dev.db*
 coverage/
 .nyc_output/
 
+# Test files (audio uploads, samples)
+files/
+
 # Misc
 *.tsbuildinfo
 .vercel
