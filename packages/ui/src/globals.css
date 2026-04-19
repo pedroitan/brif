@@ -32,7 +32,7 @@
     --ring: 163 85% 34%;
     --radius: 0.625rem;
 
-    /* BRIF brand tokens (direto, hex) */
+    /* BRIF brand tokens (direto, hex) - can be overridden by env vars */
     --brif-navy: #0B1829;
     --brif-navy-2: #152238;
     --brif-navy-3: #1E3251;
@@ -51,6 +51,10 @@
     --brif-border-2: #CBD5E0;
     --brif-surf: #F8FAFC;
     --brif-surf-2: #F1F5F9;
+
+    /* Whitelabel override - these can be set via env vars */
+    --brand-primary: var(--brif-teal);
+    --brand-accent: var(--brif-blue);
   }
 }
 

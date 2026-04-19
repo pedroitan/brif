@@ -33,6 +33,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="pt-BR"
       className={`${outfit.variable} ${syne.variable} ${jetbrains.variable}`}
     >
+      <head>
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              :root {
+                ${process.env.NEXT_PUBLIC_BRAND_COLOR ? `--brand-primary: ${process.env.NEXT_PUBLIC_BRAND_COLOR};` : ''}
+                ${process.env.NEXT_PUBLIC_ACCENT_COLOR ? `--brand-accent: ${process.env.NEXT_PUBLIC_ACCENT_COLOR};` : ''}
+              }
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-screen bg-background font-sans antialiased">
         <Providers>{children}</Providers>
       </body>

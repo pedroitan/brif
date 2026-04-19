@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { AppSidebar, type SidebarProject } from './app-sidebar';
 import { AppTopbar } from './app-topbar';
 
@@ -20,10 +21,25 @@ export function AppShell({ projects, user, children }: AppShellProps) {
       <header className="sticky top-0 z-50 flex items-center gap-2 bg-brif-navy px-4 py-2.5">
         <Link
           href="/projetos"
-          className="mr-6 flex items-center gap-2 font-display text-[16px] font-extrabold tracking-wide text-white"
+          className="mr-6 flex items-center gap-3 font-display text-[16px] font-extrabold tracking-wide text-white"
         >
-          <span className="inline-block h-2 w-2 rounded-full bg-brif-teal" />
-          BRIF
+          {process.env.NEXT_PUBLIC_COMPANY_LOGO && (
+            <Image
+              src={process.env.NEXT_PUBLIC_COMPANY_LOGO}
+              alt={process.env.NEXT_PUBLIC_COMPANY_NAME || 'Company'}
+              width={32}
+              height={32}
+              className="rounded"
+            />
+          )}
+          <div className="flex flex-col">
+            <span className="text-[15px] font-semibold leading-none">
+              {process.env.NEXT_PUBLIC_COMPANY_NAME || 'BRIF'}
+            </span>
+            <span className="text-[11px] font-normal text-white/50 leading-none mt-0.5">
+              powered by BRIF
+            </span>
+          </div>
         </Link>
         <span className="ml-auto font-mono text-[11px] uppercase tracking-wider text-white/30">
           {user.email}
