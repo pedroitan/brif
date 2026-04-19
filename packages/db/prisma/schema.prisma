@@ -1,0 +1,152 @@
+// BRIF — Demo schema (single-tenant)
+// Vamos evoluir para schema-per-tenant quando o app real começar.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────
+// USERS (internos da agência)
+// ─────────────────────────────────────────────
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String
+  passwordHash  String
+  role          UserRole  @default(MANAGER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  projects      Project[] @relation("ProjectManager")
+
+  @@map("users")
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  PLANNER
+}
+
+// ─────────────────────────────────────────────
+// PROJECT
+// ─────────────────────────────────────────────
+model Project {
+  id            String         @id @default(cuid())
+  name          String
+  clientName    String
+  clientEmail   String
+  status        ProjectStatus  @default(DRAFT)
+  managerId     String
+  manager       User           @relation("ProjectManager", fields: [managerId], references: [id])
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  meetings      Meeting[]
+
+  @@index([managerId])
+  @@map("projects")
+}
+
+enum ProjectStatus {
+  DRAFT               // Projeto criado, ainda sem briefing
+  BRIEFING_PENDING    // Aguardando transcrição/briefing
+  BRIEFING_REVIEW     // Gerente revisando briefing
+  BRIEFING_SENT       // Enviado ao cliente para aprovação
+  BRIEFING_APPROVED   // Cliente aprovou
+  BRIEFING_REJECTED   // Cliente rejeitou/comentou
+}
+
+// ─────────────────────────────────────────────
+// MEETING — gravação + transcrição
+// ─────────────────────────────────────────────
+model Meeting {
+  id                    String            @id @default(cuid())
+  projectId             String
+  project               Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  audioUrl              String            // URL no Vercel Blob
+  audioFileName         String
+  audioDurationSeconds  Int?
+  transcriptionStatus   TranscriptionStatus @default(PENDING)
+  transcriptionRaw      String?           @db.Text  // Texto bruto do Whisper
+  transcriptionEdited   String?           @db.Text  // Texto editado pelo gerente
+  transcriptionError    String?
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+
+  briefing              Briefing?
+
+  @@index([projectId])
+  @@map("meetings")
+}
+
+enum TranscriptionStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+// ─────────────────────────────────────────────
+// BRIEFING — gerado pela IA e editado
+// ─────────────────────────────────────────────
+model Briefing {
+  id              String          @id @default(cuid())
+  meetingId       String          @unique
+  meeting         Meeting         @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+
+  // Campos estruturados do briefing
+  objetivo        String          @db.Text
+  publicoAlvo     String          @db.Text
+  tomEComunicacao String          @db.Text
+  entregas        String          @db.Text
+  prazos          String          @db.Text
+  orcamento       String          @db.Text
+  observacoes     String?         @db.Text
+
+  status          BriefingStatus  @default(DRAFT)
+  generationCost  Float?          // Custo da geração em USD (Claude)
+
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  approval        Approval?
+
+  @@map("briefings")
+}
+
+enum BriefingStatus {
+  DRAFT       // Gerado pela IA, em edição
+  SENT        // Enviado ao cliente
+  APPROVED    // Aprovado pelo cliente
+  REJECTED    // Cliente pediu ajustes
+}
+
+// ─────────────────────────────────────────────
+// APPROVAL — fluxo de aprovação pelo cliente
+// ─────────────────────────────────────────────
+model Approval {
+  id            String    @id @default(cuid())
+  briefingId    String    @unique
+  briefing      Briefing  @relation(fields: [briefingId], references: [id], onDelete: Cascade)
+  magicToken    String    @unique
+  tokenExpiresAt DateTime
+  sentAt        DateTime  @default(now())
+  viewedAt      DateTime?
+  decidedAt     DateTime?
+  decision      ApprovalDecision?
+  clientComment String?   @db.Text
+
+  @@index([magicToken])
+  @@map("approvals")
+}
+
+enum ApprovalDecision {
+  APPROVED
+  REJECTED
+}

@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRIF — Product Requirements Document v3.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #0E1E35;
+    --navy2:   #1A2E4A;
+    --blue:    #1D6FBF;
+    --blue-l:  #EBF3FC;
+    --teal:    #0A6B52;
+    --teal-l:  #E4F4EE;
+    --amber:   #92520A;
+    --amber-l: #FEF3DA;
+    --red:     #991B1B;
+    --red-l:   #FEE8E8;
+    --green:   #166534;
+    --green-l: #DCFCE7;
+    --ink:     #1A1A2A;
+    --muted:   #5A6070;
+    --border:  #DEE3EC;
+    --surface: #F7F8FC;
+    --white:   #FFFFFF;
+    --rule:    #C8D0DF;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--ink);
+    background: var(--white);
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── Sidebar ── */
+  nav {
+    width: 240px;
+    min-width: 240px;
+    background: var(--navy);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 2rem;
+    z-index: 100;
+  }
+
+  .nav-brand {
+    padding: 1.75rem 1.5rem 1.25rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 0.75rem;
+  }
+
+  .nav-brand-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+    letter-spacing: .02em;
+  }
+
+  .nav-brand-sub {
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-top: 3px;
+  }
+
+  .nav-section {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: rgba(255,255,255,0.3);
+    padding: 1rem 1.5rem 0.4rem;
+  }
+
+  nav a {
+    display: block;
+    padding: 6px 1.5rem;
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    transition: color .15s, background .15s;
+    border-radius: 0;
+    line-height: 1.4;
+  }
+
+  nav a:hover, nav a.active {
+    color: #fff;
+    background: rgba(255,255,255,0.07);
+  }
+
+  nav a.active {
+    border-right: 2px solid #5BA3E8;
+  }
+
+  /* ── Main ── */
+  main {
+    flex: 1;
+    max-width: 860px;
+    padding: 3rem 3.5rem 6rem;
+    min-width: 0;
+  }
+
+  /* ── Cover ── */
+  .cover {
+    padding-bottom: 3rem;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cover-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 1rem;
+  }
+
+  .cover-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+    letter-spacing: -.01em;
+  }
+
+  .cover-subtitle {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+
+  .meta-cell {
+    background: var(--surface);
+    padding: 14px 18px;
+  }
+
+  .meta-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .meta-value {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--navy);
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 99px;
+    background: var(--amber-l);
+    color: var(--amber);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--amber);
+  }
+
+  /* ── Sections ── */
+  section { margin-bottom: 3.5rem; }
+
+  .section-number {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--blue);
+    font-weight: 500;
+    letter-spacing: .06em;
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 1.25rem;
+    letter-spacing: -.01em;
+  }
+
+  h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--navy2);
+    margin: 2rem 0 0.75rem;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h3 {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--navy2);
+    margin: 1.25rem 0 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+
+  p { margin-bottom: 1rem; color: var(--ink); }
+
+  ul, ol {
+    margin: 0 0 1rem 0;
+    padding-left: 1.25rem;
+  }
+
+  li {
+    margin-bottom: 0.35rem;
+    color: var(--ink);
+    font-size: 14.5px;
+  }
+
+  /* ── Callout ── */
+  .callout {
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    margin: 1.25rem 0;
+    border-left: 3px solid;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .callout-teal   { background: var(--teal-l);  border-color: var(--teal);  color: var(--teal); }
+  .callout-blue   { background: var(--blue-l);  border-color: var(--blue);  color: var(--blue); }
+  .callout-amber  { background: var(--amber-l); border-color: var(--amber); color: var(--amber); }
+  .callout-navy   { background: #EEF1F7;        border-color: var(--navy);  color: var(--navy2); }
+
+  .callout strong { font-weight: 600; }
+
+  /* ── Tables ── */
+  .table-wrap { overflow-x: auto; margin: 1rem 0 1.5rem; border-radius: 8px; border: 1px solid var(--border); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+
+  thead th {
+    background: var(--navy);
+    color: #fff;
+    font-weight: 500;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    padding: 10px 14px;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  tbody tr:nth-child(even) td { background: var(--surface); }
+  tbody tr:nth-child(odd) td  { background: var(--white); }
+
+  tbody tr:hover td { background: var(--blue-l); transition: background .1s; }
+
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  td:first-child { font-weight: 500; color: var(--navy2); }
+
+  /* ── Badges ── */
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    white-space: nowrap;
+  }
+  .tag-mvp   { background: var(--teal-l);  color: var(--teal); }
+  .tag-post  { background: var(--amber-l); color: var(--amber); }
+  .tag-high  { background: var(--red-l);   color: var(--red); }
+  .tag-med   { background: var(--amber-l); color: var(--amber); }
+  .tag-ok    { background: var(--green-l); color: var(--green); }
+  .tag-check { background: var(--blue-l);  color: var(--blue); }
+
+  /* ── Module cards ── */
+  .module-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 1rem 0;
+  }
+
+  .module-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.1rem;
+    background: var(--white);
+    transition: border-color .15s, box-shadow .15s;
+  }
+
+  .module-card:hover {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px var(--blue-l);
+  }
+
+  .module-id {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--blue);
+    letter-spacing: .06em;
+    margin-bottom: 5px;
+  }
+
+  .module-name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--navy2);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .module-desc {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  /* ── Roadmap ── */
+  .roadmap {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin: 1rem 0;
+  }
+
+  .rm-cell {
+    border-radius: 8px;
+    padding: 12px 10px;
+    font-size: 11.5px;
+    line-height: 1.55;
+  }
+
+  .rm-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .rm-prep  { background: #EBF3FC; color: #1A4F8A; }
+  .rm-prep .rm-label  { color: #1A4F8A; }
+  .rm-dev   { background: var(--teal-l); color: var(--teal); }
+  .rm-dev .rm-label   { color: var(--teal); }
+  .rm-dog   { background: var(--amber-l); color: var(--amber); }
+  .rm-dog .rm-label   { color: var(--amber); }
+  .rm-live  { background: var(--red-l); color: var(--red); }
+  .rm-live .rm-label  { color: var(--red); }
+
+  /* ── Divider ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 2.5rem 0;
+  }
+
+  /* ── Flow steps ── */
+  .flow {
+    counter-reset: step;
+    margin: 1rem 0;
+  }
+
+  .flow-step {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    counter-increment: step;
+  }
+
+  .flow-step:last-child { border-bottom: none; }
+
+  .flow-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--white);
+    background: var(--navy2);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .flow-text { font-size: 13.5px; color: var(--ink); line-height: 1.5; }
+  .flow-text strong { color: var(--navy2); font-weight: 600; }
+
+  /* ── RN list ── */
+  .rn-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13.5px;
+  }
+  .rn-row:last-child { border-bottom: none; }
+  .rn-code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    background: var(--navy);
+    color: #fff;
+    padding: 2px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── Stack chip ── */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 1rem 0;
+  }
+
+  .stack-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+
+  .stack-layer {
+    font-size: 9.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+
+  .stack-tech {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--navy2);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  /* ── Print ── */
+  @media print {
+    nav { display: none; }
+    main { max-width: 100%; padding: 2rem; }
+    .module-card:hover { box-shadow: none; border-color: var(--border); }
+  }
+
+  /* ── Scrollbar ── */
+  nav::-webkit-scrollbar { width: 4px; }
+  nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+  @media (max-width: 768px) {
+    body { flex-direction: column; }
+    nav { width: 100%; height: auto; position: static; }
+    main { padding: 2rem 1.25rem 4rem; }
+    .module-grid, .stack-grid, .roadmap { grid-template-columns: 1fr; }
+    .meta-grid { grid-template-columns: 1fr 1fr; }
+    .cover-title { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ SIDEBAR NAV ══ -->
+<nav id="sidebar">
+  <div class="nav-brand">
+    <div class="nav-brand-name">BRIF</div>
+    <div class="nav-brand-sub">PRD · v3.0 · Abril 2025</div>
+  </div>
+
+  <span class="nav-section">Estratégia</span>
+  <a href="#visao">1. Visão estratégica</a>
+  <a href="#arquitetura">2. Arquitetura multi-tenant</a>
+  <a href="#planos">3. Planos e precificação</a>
+
+  <span class="nav-section">Produto</span>
+  <a href="#usuarios">4. Usuários e perfis</a>
+  <a href="#modulos">5. Módulos e funcionalidades</a>
+  <a href="#fluxo">6. Fluxo principal</a>
+
+  <span class="nav-section">Engenharia</span>
+  <a href="#stack">7. Stack técnica</a>
+  <a href="#mvp">8. Escopo do MVP</a>
+  <a href="#regras">9. Regras de negócio</a>
+
+  <span class="nav-section">Gestão</span>
+  <a href="#metricas">10. Métricas de sucesso</a>
+  <a href="#riscos">11. Riscos e mitigações</a>
+  <a href="#roadmap">12. Roadmap</a>
+  <a href="#aberto">13. Em aberto</a>
+</nav>
+
+<!-- ══ MAIN CONTENT ══ -->
+<main>
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-eyebrow">Product Requirements Document</div>
+    <h1 class="cover-title">BRIF</h1>
+    <p class="cover-subtitle">Plataforma SaaS White Label para<br>Agências de Publicidade</p>
+
+    <div class="meta-grid">
+      <div class="meta-cell">
+        <div class="meta-label">Versão</div>
+        <div class="meta-value">3.0 — Draft</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Data</div>
+        <div class="meta-value">Abril 2025</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Status</div>
+        <div class="meta-value"><span class="status-badge"><span class="status-dot"></span>Em revisão</span></div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Modelo</div>
+        <div class="meta-value">SaaS Multi-Tenant WL</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Onboarding</div>
+        <div class="meta-value">100% Managed</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Mercado</div>
+        <div class="meta-value">Agências BR — PT-BR</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. VISÃO -->
+  <section id="visao">
+    <div class="section-number">01</div>
+    <h1>Visão estratégica</h1>
+
+    <p>O BRIF é uma plataforma SaaS multi-tenant com arquitetura white label managed, licenciada a agências de publicidade de pequeno e médio porte. Cada agência opera em ambiente isolado — com identidade visual própria configurada pela equipe BRIF — enquanto compartilha infraestrutura e inteligência artificial da plataforma.</p>
+
+    <div class="callout callout-teal">
+      <strong>Proposta de valor:</strong> Um único sistema white label que transcreve, consolida, organiza e gera documentos com IA — entregando à agência a identidade de um produto próprio, sem o custo e a complexidade de desenvolvê-lo do zero.
+    </div>
+
+    <h2>Problema central</h2>
+    <ul>
+      <li>Briefings perdidos em conversas de WhatsApp e e-mails não rastreáveis</li>
+      <li>Retrabalho por decisões de reunião que nunca foram registradas formalmente</li>
+      <li>Clientes sem visibilidade real do andamento dos projetos</li>
+      <li>Propostas criadas do zero em ferramentas externas a cada novo projeto</li>
+      <li>Contratos e fornecedores gerenciados de forma manual e descentralizada</li>
+      <li>Cada agência usa 5–8 apps desconectados para um único projeto</li>
+    </ul>
+
+    <h2>Posicionamento vs. concorrentes</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Dimensão</th><th>BRIF</th><th>ClickUp/Monday</th><th>Publi Manager</th><th>Slack</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Contexto específico de agência</td><td><span class="tag tag-ok">✓</span></td><td><span class="tag tag-high">✗</span></td><td><span class="tag tag-ok">✓</span></td><td><span class="tag tag-high">✗</span></td></tr>
+          <tr><td>IA: transcrição + briefing automático</td><td><span class="tag tag-ok">✓</span></td><td><span class="tag tag-high">✗</span></td><td><span class="tag tag-high">✗</span></td><td><span class="tag tag-high">✗</span></td></tr>
+          <tr><td>Proposta visual gerada por IA</td><td><span class="tag tag-ok">✓</span></td><td><span class="tag tag-high">✗</span></td><td><span class="tag tag-high">✗</span></td><td><span class="tag tag-high">✗</span></td></tr>
+          <tr><td>Portal do cliente com aprovação digital</td><td><span class="tag tag-ok">✓</span></td><td><span class="tag tag-med">parcial</span></td><td><span class="tag tag-med">parcial</span></td><td><span class="tag tag-high">✗</span></td></tr>
+          <tr><td>White label invisível para o cliente final</td><td><span class="tag tag-ok">✓</span></td><td><span class="tag tag-high">✗</span></td><td><span class="tag tag-high">✗</span></td><td><span class="tag tag-high">✗</span></td></tr>
+          <tr><td>Fluxo end-to-end: briefing → contrato</td><td><span class="tag tag-ok">✓</span></td><td><span class="tag tag-high">✗</span></td><td><span class="tag tag-med">parcial</span></td><td><span class="tag tag-high">✗</span></td></tr>
+          <tr><td>Debriefing com diff automático</td><td><span class="tag tag-ok">✓</span></td><td><span class="tag tag-high">✗</span></td><td><span class="tag tag-high">✗</span></td><td><span class="tag tag-high">✗</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 2. ARQUITETURA -->
+  <section id="arquitetura">
+    <div class="section-number">02</div>
+    <h1>Arquitetura multi-tenant white label</h1>
+
+    <h2>Modelo de isolamento</h2>
+    <p>Cada agência cliente é um tenant com schema PostgreSQL próprio. O isolamento é físico — nenhuma query de um tenant acessa dados de outro.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tbody>
+          <tr><td>Isolamento</td><td>Schema-per-tenant no PostgreSQL — isolamento físico completo</td></tr>
+          <tr><td>Subdomínio padrão</td><td><code>agencia.brif.app</code> — provisionado pela equipe BRIF</td></tr>
+          <tr><td>Domínio customizado</td><td><code>app.minhaagencia.com.br</code> — CNAME + SSL automático via Cloudflare</td></tr>
+          <tr><td>Identidade visual</td><td>Logo (3 variações), paleta de cores, fontes — configurados no onboarding</td></tr>
+          <tr><td>Templates de proposta</td><td>Criados com a marca da agência no onboarding pela equipe BRIF</td></tr>
+          <tr><td>E-mail transacional</td><td>Disparos com nome, logo e domínio da agência via Resend subdomain auth</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Onboarding 100% managed</h2>
+    <div class="callout callout-blue">
+      <strong>Decisão de produto:</strong> o setup de cada tenant é feito exclusivamente pela equipe BRIF. A agência não altera logo, cores, domínio ou templates após o onboarding. SLA: até 5 dias úteis após assinatura do contrato.
+    </div>
+
+    <div class="flow">
+      <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>Contrato assinado</strong> → equipe BRIF recebe os assets: logo, cores, fontes, domínio</div></div>
+      <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>Criação do tenant</strong> no painel admin: slug, subdomínio, plano</div></div>
+      <div class="flow-step"><div class="flow-num">3</div><div class="flow-text"><strong>Configuração white label</strong>: logo, paleta, fontes, domínio customizado (CNAME + SSL)</div></div>
+      <div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><strong>Templates de proposta</strong> criados com a identidade da agência</div></div>
+      <div class="flow-step"><div class="flow-num">5</div><div class="flow-text"><strong>E-mail transacional</strong> configurado com subdomain auth no Resend</div></div>
+      <div class="flow-step"><div class="flow-num">6</div><div class="flow-text"><strong>Usuários iniciais criados</strong>: Tenant Admin + Gerente de Projetos</div></div>
+      <div class="flow-step"><div class="flow-num">7</div><div class="flow-text"><strong>Entrega + sessão de treinamento</strong> com o time da agência</div></div>
+    </div>
+
+    <h2>Níveis de administração</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Nível</th><th>Acesso</th><th>Papel</th></tr></thead>
+        <tbody>
+          <tr><td>Equipe BRIF</td><td>admin.brif.app — global</td><td>Onboarding, white label, suporte, billing, métricas de negócio</td></tr>
+          <tr><td>Tenant Admin / Sócio</td><td>Dentro do tenant</td><td>Gerencia usuários e vê métricas operacionais da agência</td></tr>
+          <tr><td>Gerente de Projetos</td><td>Dentro do tenant</td><td>Projetos, tarefas, briefings, prazos</td></tr>
+          <tr><td>Demais perfis internos</td><td>Dentro do tenant</td><td>Execução operacional conforme papel</td></tr>
+          <tr><td>Cliente externo</td><td>Portal isolado (Magic Link)</td><td>Aprovações e status do projeto específico</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 3. PLANOS -->
+  <section id="planos">
+    <div class="section-number">03</div>
+    <h1>Planos e precificação</h1>
+    <p>Modelo de planos fixos com limites de uso. Todos incluem onboarding assistido pela equipe BRIF. Aquisição exclusivamente via demo call — sem trial.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Recurso</th><th>Basic</th><th>Pro</th><th>Enterprise</th></tr></thead>
+        <tbody>
+          <tr><td>Usuários internos</td><td>até 5</td><td>até 20</td><td>Ilimitado</td></tr>
+          <tr><td>Projetos ativos</td><td>até 5</td><td>até 30</td><td>Ilimitado</td></tr>
+          <tr><td>Transcrições/mês</td><td>120 min</td><td>600 min</td><td>Ilimitado</td></tr>
+          <tr><td>Propostas IA/mês</td><td>10</td><td>50</td><td>Ilimitado</td></tr>
+          <tr><td>Storage</td><td>5 GB</td><td>50 GB</td><td>500 GB</td></tr>
+          <tr><td>White label completo</td><td><span class="tag tag-ok">✓</span></td><td><span class="tag tag-ok">✓</span></td><td><span class="tag tag-ok">✓</span></td></tr>
+          <tr><td>Domínio customizado</td><td><span class="tag tag-ok">✓</span></td><td><span class="tag tag-ok">✓</span></td><td><span class="tag tag-ok">✓</span></td></tr>
+          <tr><td>Templates de proposta</td><td>até 3</td><td>Ilimitado</td><td>Ilimitado</td></tr>
+          <tr><td>Suporte</td><td>E-mail</td><td>Chat + e-mail</td><td>Gerente dedicado</td></tr>
+          <tr><td><strong>Preço referência/mês</strong></td><td><strong>R$ 297</strong></td><td><strong>R$ 697</strong></td><td><strong>Sob consulta</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12.5px; color:var(--muted);">* Valores de referência. Validar com custo real de Whisper + Claude durante o dogfooding.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 4. USUÁRIOS -->
+  <section id="usuarios">
+    <div class="section-number">04</div>
+    <h1>Usuários e perfis de acesso</h1>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Perfil</th><th>Tipo</th><th>Responsabilidades</th><th>Acesso</th></tr></thead>
+        <tbody>
+          <tr><td>Equipe BRIF</td><td>Plataforma</td><td>Onboarding, white label, suporte, billing, métricas globais</td><td>admin.brif.app</td></tr>
+          <tr><td>Tenant Admin / Sócio</td><td>Interno</td><td>Gerencia usuários da agência, vê métricas e dados financeiros</td><td>Full Admin (tenant)</td></tr>
+          <tr><td>Gerente de Projetos</td><td>Interno</td><td>Cria projetos, atribui tarefas, aprova briefings, gerencia prazos</td><td>Gestor</td></tr>
+          <tr><td>Planner / Estratégia</td><td>Interno</td><td>Revisa transcrições, consolida briefings, gera propostas via IA</td><td>Criação + Plano</td></tr>
+          <tr><td>Produtor Executivo</td><td>Interno</td><td>Gerencia produção, contratos, disparo a fornecedores</td><td>Produção</td></tr>
+          <tr><td>Time de Criação</td><td>Interno</td><td>Recebe tarefas, faz upload de entregas, comenta versões</td><td>Execução</td></tr>
+          <tr><td>Financeiro / Jurídico</td><td>Interno</td><td>Revisa contratos, aprova orçamentos, vê dados financeiros</td><td>Financeiro</td></tr>
+          <tr><td>Cliente externo</td><td>Externo</td><td>Aprova briefing, acompanha status, visualiza propostas</td><td>Magic Link por projeto</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-navy">
+      O cliente externo acessa via <strong>Magic Link</strong> enviado por e-mail — sem criar conta ou senha. Cada projeto tem seu próprio link seguro. A interface do cliente é 100% com a marca da agência; o BRIF permanece invisível.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 5. MÓDULOS -->
+  <section id="modulos">
+    <div class="section-number">05</div>
+    <h1>Módulos e funcionalidades</h1>
+
+    <div class="module-grid">
+      <div class="module-card">
+        <div class="module-id">M1 <span class="tag tag-mvp">MVP</span></div>
+        <div class="module-name">Briefing e transcrição IA</div>
+        <div class="module-desc">Upload de áudio/vídeo ou integração Meet/Zoom. Whisper large-v3 com diarização. Claude gera briefing estruturado. Fluxo de aprovação 3 etapas com notificações white label.</div>
+      </div>
+      <div class="module-card">
+        <div class="module-id">M2 <span class="tag tag-mvp">MVP</span></div>
+        <div class="module-name">Gestão de projetos e tarefas</div>
+        <div class="module-desc">Kanban e lista. Fases configuráveis. Subtarefas com checklists, prazos e responsáveis. Upload de arquivos e comentários versionados. Menção com @nome.</div>
+      </div>
+      <div class="module-card">
+        <div class="module-id">M3 <span class="tag tag-mvp">MVP</span></div>
+        <div class="module-name">Calendário e roadmap</div>
+        <div class="module-desc">Calendário unificado com integração Google Calendar. Alertas automáticos 72h, 24h e no dia. Gantt interativo com dependências no pós-MVP.</div>
+      </div>
+      <div class="module-card">
+        <div class="module-id">M4 <span class="tag tag-mvp">MVP</span></div>
+        <div class="module-name">Portal do cliente</div>
+        <div class="module-desc">Status em tempo real, aprovação digital de briefing, acesso a propostas. Magic Link por projeto — sem senha. Interface responsiva 100% com a marca da agência.</div>
+      </div>
+      <div class="module-card">
+        <div class="module-id">M5 <span class="tag tag-mvp">MVP</span></div>
+        <div class="module-name">Propostas visuais com IA</div>
+        <div class="module-desc">Claude transforma briefing em proposta HTML com logo e cores da agência. Templates por tipo de campanha. Gerente decide quando publicar. Versionamento completo.</div>
+      </div>
+      <div class="module-card">
+        <div class="module-id">M6 <span class="tag tag-mvp">MVP</span></div>
+        <div class="module-name">Debriefing e ajustes</div>
+        <div class="module-desc">Mesmo fluxo de transcrição aplicado ao debriefing. IA identifica ajustes vs. proposta anterior (diff). Nova versão com marcação visual das mudanças.</div>
+      </div>
+      <div class="module-card">
+        <div class="module-id">M7 <span class="tag tag-mvp">MVP</span></div>
+        <div class="module-name">Produção e contratos</div>
+        <div class="module-desc">Upload de contratos com metadados. Aprovação dupla obrigatória: Jurídico + Financeiro. Disparo automático de e-mail para fornecedores. Status de rastreio.</div>
+      </div>
+      <div class="module-card">
+        <div class="module-id">M8 <span class="tag tag-mvp">MVP</span></div>
+        <div class="module-name">Gestão de documentos</div>
+        <div class="module-desc">Repositório central por projeto com versionamento. Categorias: briefing, criação, produção, financeiro, legal. Controle de acesso por perfil e documento.</div>
+      </div>
+      <div class="module-card" style="grid-column: 1 / -1;">
+        <div class="module-id">M9 <span class="tag tag-mvp">MVP</span></div>
+        <div class="module-name">Painel admin (admin.brif.app)</div>
+        <div class="module-desc">Ferramenta interna exclusiva da equipe BRIF. Criação e configuração completa de tenants: white label, domínio, templates, e-mail, usuários. Dashboard global: tenants, MRR, churn, custo de IA por tenant em tempo real. Impersonation segura com log de auditoria completo.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 6. FLUXO -->
+  <section id="fluxo">
+    <div class="section-number">06</div>
+    <h1>Fluxo principal do produto</h1>
+
+    <div class="flow">
+      <div class="flow-step"><div class="flow-num">0</div><div class="flow-text"><strong>Setup (BRIF)</strong> — equipe configura tenant: white label, domínio, templates, e-mail, usuários iniciais</div></div>
+      <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>Reunião de briefing</strong> com cliente final — Meet, Zoom ou presencial</div></div>
+      <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>Upload da gravação</strong> ou captura automática via integração Meet/Zoom</div></div>
+      <div class="flow-step"><div class="flow-num">3</div><div class="flow-text"><strong>Transcrição automática</strong> — Whisper large-v3 com speakers e timestamps</div></div>
+      <div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><strong>IA gera Briefing Consolidado</strong> (Claude) → Planner revisa → Gerente aprova</div></div>
+      <div class="flow-step"><div class="flow-num">5</div><div class="flow-text"><strong>Cliente confirma briefing</strong> via Magic Link com comentários e timestamp</div></div>
+      <div class="flow-step"><div class="flow-num">6</div><div class="flow-text"><strong>Projeto criado</strong> → tarefas disparadas ao time de criação</div></div>
+      <div class="flow-step"><div class="flow-num">7</div><div class="flow-text"><strong>Time executa</strong> → upload de entregas → acompanhamento em tempo real</div></div>
+      <div class="flow-step"><div class="flow-num">8</div><div class="flow-text"><strong>Proposta visual gerada por IA</strong> (HTML com marca da agência) → Gerente publica</div></div>
+      <div class="flow-step"><div class="flow-num">9</div><div class="flow-text"><strong>Cliente acessa via portal</strong> e aprova ou solicita ajustes</div></div>
+      <div class="flow-step"><div class="flow-num">10</div><div class="flow-text"><strong>Debriefing</strong> — nova transcrição → diff automático → nova versão da proposta</div></div>
+      <div class="flow-step"><div class="flow-num">11</div><div class="flow-text"><strong>Aprovação final</strong> → início da produção executiva</div></div>
+      <div class="flow-step"><div class="flow-num">12</div><div class="flow-text"><strong>Contratos</strong> — Jurídico + Financeiro aprovam → disparo automático a fornecedores</div></div>
+      <div class="flow-step"><div class="flow-num">13</div><div class="flow-text"><strong>Entrega final</strong> → fechamento → projeto arquivado</div></div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 7. STACK -->
+  <section id="stack">
+    <div class="section-number">07</div>
+    <h1>Stack técnica</h1>
+
+    <div class="stack-grid">
+      <div class="stack-chip"><div class="stack-layer">Frontend</div><div class="stack-tech">Next.js 14 + Tailwind + shadcn/ui</div></div>
+      <div class="stack-chip"><div class="stack-layer">Backend</div><div class="stack-tech">Node.js + tRPC</div></div>
+      <div class="stack-chip"><div class="stack-layer">Banco</div><div class="stack-tech">PostgreSQL + Prisma (schema-per-tenant)</div></div>
+      <div class="stack-chip"><div class="stack-layer">Auth</div><div class="stack-tech">NextAuth.js + JWT + Magic Link</div></div>
+      <div class="stack-chip"><div class="stack-layer">Transcrição IA</div><div class="stack-tech">OpenAI Whisper API (large-v3)</div></div>
+      <div class="stack-chip"><div class="stack-layer">IA de linguagem</div><div class="stack-tech">Anthropic Claude API (claude-sonnet-4)</div></div>
+      <div class="stack-chip"><div class="stack-layer">Storage</div><div class="stack-tech">Cloudflare R2</div></div>
+      <div class="stack-chip"><div class="stack-layer">Fila de jobs</div><div class="stack-tech">BullMQ + Redis</div></div>
+      <div class="stack-chip"><div class="stack-layer">E-mail</div><div class="stack-tech">Resend + subdomain auth por tenant</div></div>
+      <div class="stack-chip"><div class="stack-layer">Billing</div><div class="stack-tech">Stripe + Customer Portal</div></div>
+      <div class="stack-chip"><div class="stack-layer">DNS / SSL</div><div class="stack-tech">Cloudflare Workers</div></div>
+      <div class="stack-chip"><div class="stack-layer">Infra</div><div class="stack-tech">Vercel (frontend) + Railway (backend)</div></div>
+    </div>
+
+    <div class="callout callout-navy" style="margin-top:1.5rem;">
+      <strong>Por que schema-per-tenant?</strong> Isolamento físico total — impossível vazar dados entre tenants por bug de query. Facilita backup individual, auditorias futuras (LGPD) e escala até ~500 tenants no mesmo cluster sem degradação.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 8. MVP -->
+  <section id="mvp">
+    <div class="section-number">08</div>
+    <h1>Escopo do MVP (0–6 meses)</h1>
+
+    <p>Estratégia: dogfooding pela própria agência do founder → beta fechado com agências parceiras já mapeadas → go-live via demo call.</p>
+
+    <h2>Incluído no MVP</h2>
+    <ul>
+      <li>Multi-tenancy com schema isolation + subdomínio padrão por tenant</li>
+      <li>Painel Admin (admin.brif.app): onboarding managed completo, white label total, monitoramento</li>
+      <li>White label: logo, cores, fontes, domínio customizado, e-mail, templates de proposta</li>
+      <li>Billing Stripe: planos Basic e Pro com recorrência mensal</li>
+      <li>Todos os 8 perfis de usuário com RBAC granular</li>
+      <li>Upload de áudio + transcrição Whisper assíncrona (BullMQ)</li>
+      <li>Briefing Consolidado via Claude + fluxo de aprovação 3 etapas</li>
+      <li>Portal do cliente com Magic Link (status, briefing, proposta, mensagens)</li>
+      <li>Geração de proposta visual HTML via Claude com marca da agência</li>
+      <li>Kanban + lista + upload de arquivos + comentários nas tarefas</li>
+      <li>Calendário básico com integração Google Calendar e alertas de prazo</li>
+      <li>Repositório de documentos por projeto com categorias e versionamento</li>
+      <li>E-mail transacional white label via Resend</li>
+    </ul>
+
+    <h2>Pós-MVP (6–12 meses)</h2>
+    <ul>
+      <li>App mobile React Native (iOS + Android)</li>
+      <li>Módulo de debriefing com diff automático de propostas</li>
+      <li>Módulo de produção e contratos com fluxo de aprovação</li>
+      <li>Gantt interativo com dependências entre tarefas</li>
+      <li>Integração Google Drive / Dropbox</li>
+      <li>Integração DocuSign para assinatura eletrônica</li>
+      <li>Busca full-text em transcrições e documentos</li>
+      <li>Dashboard de métricas operacionais da agência</li>
+      <li>Self-service parcial de white label pelo Tenant Admin</li>
+      <li>Suporte a espanhol para expansão LATAM</li>
+    </ul>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 9. REGRAS -->
+  <section id="regras">
+    <div class="section-number">09</div>
+    <h1>Regras de negócio críticas</h1>
+
+    <div class="rn-row"><span class="rn-code">RN-01</span> Projetos só são criados após aprovação do briefing pelo cliente — sem exceção ou bypass</div>
+    <div class="rn-row"><span class="rn-code">RN-02</span> Propostas só ficam visíveis ao cliente após publicação explícita pelo Gerente — nunca automático</div>
+    <div class="rn-row"><span class="rn-code">RN-03</span> Contratos só são disparados a fornecedores após aprovação dupla: Jurídico + Financeiro</div>
+    <div class="rn-row"><span class="rn-code">RN-04</span> Clientes externos nunca acessam dados internos da agência: tarefas, equipe, finanças, outros projetos</div>
+    <div class="rn-row"><span class="rn-code">RN-05</span> Dados de diferentes tenants são fisicamente isolados em schemas PostgreSQL separados</div>
+    <div class="rn-row"><span class="rn-code">RN-06</span> Versões aprovadas de briefing e proposta são imutáveis — toda mudança cria nova versão auditável</div>
+    <div class="rn-row"><span class="rn-code">RN-07</span> Transcrição passa por revisão humana antes do briefing formal — IA auxilia, humano decide</div>
+    <div class="rn-row"><span class="rn-code">RN-08</span> Configurações de white label (domínio, templates, e-mail) são gerenciadas exclusivamente pela equipe BRIF</div>
+    <div class="rn-row"><span class="rn-code">RN-09</span> Impersonation pelo Admin é sempre logada com operador, motivo e timestamp completo</div>
+    <div class="rn-row"><span class="rn-code">RN-10</span> E-mails transacionais saem 100% com a marca da agência — BRIF nunca aparece ao cliente final</div>
+    <div class="rn-row"><span class="rn-code">RN-11</span> Tenants que excedem o limite de plano recebem aviso automático; bloqueio após 7 dias sem upgrade</div>
+    <div class="rn-row"><span class="rn-code">RN-12</span> Custos de IA por tenant são monitorados em tempo real no painel admin para controle de margem</div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 10. MÉTRICAS -->
+  <section id="metricas">
+    <div class="section-number">10</div>
+    <h1>Métricas de sucesso</h1>
+
+    <h2>Por tenant (produto)</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Métrica</th><th>Meta</th><th>Prazo</th></tr></thead>
+        <tbody>
+          <tr><td>Tarefas criadas no app vs WhatsApp/e-mail</td><td>80% no app</td><td>60 dias após onboarding</td></tr>
+          <tr><td>Tempo de consolidação de briefing</td><td>Redução de 70%</td><td>30 dias</td></tr>
+          <tr><td>Retrabalho por informação incompleta</td><td>Redução de 50%</td><td>90 dias</td></tr>
+          <tr><td>NPS do portal do cliente</td><td>>50</td><td>90 dias após go-live</td></tr>
+          <tr><td>Proposta gerada após briefing aprovado</td><td>&lt;30 minutos</td><td>Desde o MVP</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Do negócio SaaS</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Métrica</th><th>6 meses</th><th>12 meses</th></tr></thead>
+        <tbody>
+          <tr><td>Tenants pagantes</td><td>10</td><td>50</td></tr>
+          <tr><td>MRR</td><td>R$ 5.000</td><td>R$ 30.000</td></tr>
+          <tr><td>Churn mensal</td><td>&lt;3%</td><td>&lt;2%</td></tr>
+          <tr><td>Custo de IA / receita</td><td>&lt;15%</td><td>&lt;12%</td></tr>
+          <tr><td>NPS da plataforma</td><td>>40</td><td>>60</td></tr>
+          <tr><td>Tempo de onboarding</td><td>≤5 dias úteis</td><td>≤3 dias úteis</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 11. RISCOS -->
+  <section id="riscos">
+    <div class="section-number">11</div>
+    <h1>Riscos e mitigações</h1>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Risco</th><th>Nível</th><th>Mitigação</th></tr></thead>
+        <tbody>
+          <tr><td>Gargalo no onboarding manual com crescimento de tenants</td><td><span class="tag tag-high">Alto</span></td><td>Checklist + templates no admin; self-service parcial planejado pós-MVP</td></tr>
+          <tr><td>Custo de IA escalando acima da receita</td><td><span class="tag tag-high">Alto</span></td><td>Limites rígidos por plano + monitoramento de custo/tenant em tempo real</td></tr>
+          <tr><td>Vazamento de dados entre tenants</td><td><span class="tag tag-high">Alto</span></td><td>Schema isolation + pen test antes do go-live + auditoria periódica</td></tr>
+          <tr><td>Resistência do time das agências à adoção</td><td><span class="tag tag-med">Médio</span></td><td>Treinamento no onboarding + UX simplificado + suporte próximo</td></tr>
+          <tr><td>Qualidade de transcrição em PT-BR</td><td><span class="tag tag-med">Médio</span></td><td>Whisper large-v3 + revisão humana obrigatória antes do briefing</td></tr>
+          <tr><td>Dependência de APIs externas (Whisper + Claude)</td><td><span class="tag tag-med">Médio</span></td><td>Filas BullMQ + fallback manual + monitoramento de status das APIs</td></tr>
+          <tr><td>Churn alto no início</td><td><span class="tag tag-med">Médio</span></td><td>Dogfooding extenso antes do go-live; beta fechado com parceiras</td></tr>
+          <tr><td>Feature creep comprometendo o prazo</td><td><span class="tag tag-med">Médio</span></td><td>Escopo MVP travado neste documento; novas features → backlog</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 12. ROADMAP -->
+  <section id="roadmap">
+    <div class="section-number">12</div>
+    <h1>Roadmap</h1>
+
+    <div class="roadmap">
+      <div class="rm-cell rm-prep">
+        <span class="rm-label">Sem 1–2</span>
+        Validação PRD com stakeholders + agências parceiras mapeadas
+      </div>
+      <div class="rm-cell rm-prep">
+        <span class="rm-label">Sem 3–4</span>
+        Wireframes das telas core
+      </div>
+      <div class="rm-cell rm-prep">
+        <span class="rm-label">Sem 5–8</span>
+        Time de dev + setup infra multi-tenant + Stripe sandbox
+      </div>
+      <div class="rm-cell rm-dev">
+        <span class="rm-label">Mês 3–4</span>
+        Dev MVP — sprints de 2 semanas com demos internas
+      </div>
+      <div class="rm-cell rm-dog">
+        <span class="rm-label">Mês 5–6</span>
+        Dogfooding (agência founder) + beta fechado com parceiras
+      </div>
+      <div class="rm-cell rm-live">
+        <span class="rm-label">Mês 7+</span>
+        Go-live · demo call · expansão · roadmap pós-MVP
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 13. EM ABERTO -->
+  <section id="aberto">
+    <div class="section-number">13</div>
+    <h1>Decisões em aberto</h1>
+
+    <div class="callout callout-amber">
+      Estes itens precisam de resposta antes do início do desenvolvimento para não gerar retrabalho de arquitetura.
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Decisão</th><th>Impacto</th><th>Recomendação</th></tr></thead>
+        <tbody>
+          <tr><td>Custo real de IA por tenant</td><td>Define viabilidade dos preços dos planos</td><td>Rodar 10 briefings reais no dogfooding e atualizar planilha de viabilidade</td></tr>
+          <tr><td>Calibrar limites dos planos</td><td>Se custo IA >15% da receita, ajustar minutos ou preço</td><td>Calcular com dados reais antes de publicar o pricing</td></tr>
+          <tr><td>LGPD — localização dos dados</td><td>Impacta escolha de região de infra</td><td>Consultar advogado — por ora sem requisito de infra BR</td></tr>
+          <tr><td>Self-service parcial pós-onboarding</td><td>Reduz carga da equipe BRIF no longo prazo</td><td>Planejar para pós-MVP: tenant admin pode ajustar logo/cores</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size: 12.5px; color: var(--muted); margin-top: 2rem;">
+      Este PRD é um documento vivo. Versão 3.0 — Abril 2025. Todas as decisões tomadas até esta data estão consolidadas acima.
+    </p>
+  </section>
+
+</main>
+
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const match = document.querySelector(`nav a[href="#${e.target.id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>

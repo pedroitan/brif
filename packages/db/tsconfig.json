@@ -1,0 +1,7 @@
+{
+  "extends": "@brif/config/tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "include": ["src/**/*.ts", "prisma/**/*.ts"]
+}

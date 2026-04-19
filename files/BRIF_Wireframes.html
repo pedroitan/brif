@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRIF — Wireframes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:    #0B1829;
+  --navy2:   #152238;
+  --navy3:   #1E3251;
+  --teal:    #0D9E78;
+  --teal-d:  #0A7D60;
+  --teal-l:  #E6F7F2;
+  --amber:   #E09B2A;
+  --amber-l: #FEF6E4;
+  --red:     #DC3545;
+  --red-l:   #FDECEA;
+  --blue:    #2D7DD2;
+  --blue-l:  #EBF3FC;
+  --ink:     #1A2130;
+  --muted:   #6B7A8D;
+  --border:  #E2E8F0;
+  --border2: #CBD5E0;
+  --surf:    #F8FAFC;
+  --surf2:   #F1F5F9;
+  --white:   #FFFFFF;
+  --sidebar: 220px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--surf);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TAB SWITCHER ── */
+.tab-bar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--navy);
+  padding: 10px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+.tab-brand {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: .04em;
+  margin-right: 24px;
+  white-space: nowrap;
+}
+
+.tab-brand span {
+  display: inline-block;
+  width: 8px; height: 8px;
+  background: var(--teal);
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+  margin-bottom: 2px;
+}
+
+.tab {
+  font-family: 'Outfit', sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+
+.tab:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.85); }
+.tab.active { background: var(--teal); color: #fff; }
+
+.tab-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.25);
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+}
+
+/* ── SCREENS ── */
+.screen { display: none; flex: 1; overflow: hidden; }
+.screen.active { display: flex; }
+
+/* ══════════════════════════════════════════════
+   SCREEN 1 — BRIEFING
+══════════════════════════════════════════════ */
+
+/* shared app layout */
+.app-layout {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 44px);
+  overflow: hidden;
+}
+
+.sidebar {
+  width: var(--sidebar);
+  min-width: var(--sidebar);
+  background: var(--navy2);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow-y: auto;
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+
+.sidebar-section {
+  padding: 18px 14px 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: rgba(255,255,255,0.25);
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.55);
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: all .12s;
+}
+
+.sidebar-item:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.04); }
+.sidebar-item.active { color: #fff; background: rgba(13,158,120,0.15); border-left-color: var(--teal); }
+
+.sidebar-icon {
+  width: 16px; height: 16px;
+  opacity: .7;
+  flex-shrink: 0;
+}
+
+.sidebar-item.active .sidebar-icon { opacity: 1; }
+
+.sidebar-badge {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  background: var(--teal);
+  color: #fff;
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+
+.sidebar-project {
+  margin: 8px 12px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  padding: 10px 10px;
+}
+
+.sp-label { font-size: 9px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 3px; font-family: 'JetBrains Mono', monospace; }
+.sp-name  { font-size: 12.5px; font-weight: 600; color: rgba(255,255,255,0.9); line-height: 1.3; }
+.sp-phase { font-size: 11px; color: var(--teal); margin-top: 4px; }
+
+.sidebar-avatar {
+  margin-top: auto;
+  padding: 14px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.avatar-circle {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--teal);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; color: #fff;
+  flex-shrink: 0;
+}
+
+.avatar-name  { font-size: 12.5px; font-weight: 500; color: rgba(255,255,255,.85); }
+.avatar-role  { font-size: 10.5px; color: rgba(255,255,255,.35); }
+
+/* content area */
+.content { flex: 1; overflow-y: auto; background: var(--surf); }
+
+/* top bar */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 24px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.topbar-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.topbar-crumb {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.topbar-crumb span { color: var(--ink); font-weight: 500; }
+
+.topbar-actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+
+.btn {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 7px 16px;
+  border-radius: 7px;
+  border: none;
+  cursor: pointer;
+  transition: all .12s;
+  white-space: nowrap;
+}
+
+.btn-primary { background: var(--teal); color: #fff; }
+.btn-primary:hover { background: var(--teal-d); }
+.btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border2); }
+.btn-ghost:hover { background: var(--surf2); color: var(--ink); }
+.btn-sm { font-size: 12px; padding: 5px 12px; }
+
+/* page content */
+.page { padding: 24px; }
+
+/* briefing flow steps */
+.flow-steps {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 28px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.flow-step {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  border-right: 1px solid var(--border);
+  position: relative;
+}
+
+.flow-step:last-child { border-right: none; }
+
+.flow-step.done { color: var(--teal); }
+.flow-step.active { color: var(--ink); background: var(--teal-l); }
+.flow-step.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--teal);
+}
+
+.flow-num {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  background: var(--surf2);
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.flow-step.done .flow-num { background: var(--teal); color: #fff; }
+.flow-step.active .flow-num { background: var(--teal); color: #fff; }
+
+/* two column layout */
+.two-col { display: grid; grid-template-columns: 1fr 380px; gap: 20px; }
+
+/* cards */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.card-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.tag-teal   { background: var(--teal-l); color: var(--teal-d); }
+.tag-amber  { background: var(--amber-l); color: #92520A; }
+.tag-red    { background: var(--red-l); color: var(--red); }
+.tag-blue   { background: var(--blue-l); color: var(--blue); }
+.tag-gray   { background: var(--surf2); color: var(--muted); }
+
+.card-body { padding: 18px; }
+
+/* transcript area */
+.transcript-area {
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: var(--ink);
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.speaker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--teal);
+  margin-top: 14px;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.speaker-time { color: var(--muted); font-size: 9px; }
+
+.speaker-b { color: var(--blue); }
+
+.transcript-text { color: #374151; font-size: 13px; line-height: 1.7; }
+
+/* briefing fields */
+.brief-field {
+  margin-bottom: 16px;
+}
+
+.brief-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+
+.brief-value {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--surf);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 9px 12px;
+  min-height: 38px;
+}
+
+.brief-value.highlight {
+  border-color: var(--teal);
+  background: var(--teal-l);
+}
+
+/* approval bar */
+.approval-bar {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+}
+
+.approval-steps {
+  display: flex;
+  gap: 0;
+  align-items: center;
+}
+
+.apv-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+}
+
+.apv-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 60%;
+  width: 80%;
+  height: 1px;
+  background: var(--border);
+}
+
+.apv-step.done::after { background: var(--teal); }
+
+.apv-circle {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+  color: var(--muted);
+  background: var(--white);
+  position: relative;
+  z-index: 1;
+}
+
+.apv-step.done .apv-circle { border-color: var(--teal); background: var(--teal); color: #fff; }
+.apv-step.active .apv-circle { border-color: var(--teal); color: var(--teal); }
+.apv-step.pending .apv-circle { border-color: var(--border); color: var(--muted); }
+
+.apv-label { font-size: 11px; font-weight: 500; color: var(--muted); text-align: center; }
+.apv-step.done .apv-label { color: var(--teal); }
+.apv-step.active .apv-label { color: var(--ink); font-weight: 600; }
+
+/* audio player mock */
+.audio-player {
+  background: var(--navy);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.play-btn {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--teal);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.play-btn svg { margin-left: 2px; }
+
+.waveform {
+  flex: 1;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.waveform-bar {
+  flex: 1;
+  background: rgba(255,255,255,0.15);
+  border-radius: 1px;
+}
+
+.waveform-bar.played { background: var(--teal); }
+
+.audio-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════════
+   SCREEN 2 — KANBAN
+══════════════════════════════════════════════ */
+
+.kanban-board {
+  display: flex;
+  gap: 14px;
+  padding: 20px 24px;
+  overflow-x: auto;
+  height: calc(100vh - 44px - 57px);
+  align-items: flex-start;
+}
+
+.kanban-col {
+  min-width: 260px;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.col-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.col-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.col-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  flex: 1;
+}
+
+.col-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--muted);
+  background: var(--surf2);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.task-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 13px;
+  cursor: pointer;
+  transition: all .12s;
+  border-left: 3px solid transparent;
+}
+
+.task-card:hover {
+  border-color: var(--teal);
+  border-left-color: var(--teal);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.task-card.urgent { border-left-color: var(--red); }
+.task-card.review { border-left-color: var(--amber); }
+
+.task-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 7px;
+  display: inline-block;
+}
+
+.task-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.task-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.task-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.task-assignee {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.task-due {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  margin-left: auto;
+}
+
+.task-due.late { color: var(--red); }
+
+.task-files {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.add-task {
+  padding: 9px 12px;
+  border: 1px dashed var(--border2);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 12.5px;
+  cursor: pointer;
+  text-align: center;
+  transition: all .12s;
+}
+
+.add-task:hover { background: var(--white); color: var(--teal); border-color: var(--teal); }
+
+/* ══════════════════════════════════════════════
+   SCREEN 3 — PORTAL DO CLIENTE
+══════════════════════════════════════════════ */
+
+.client-portal {
+  min-height: calc(100vh - 44px);
+  background: #F0F4F8;
+  display: flex;
+  flex-direction: column;
+}
+
+.client-header {
+  background: var(--navy);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 56px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.client-brand {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: .04em;
+}
+
+.client-project {
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.45);
+  margin-left: 8px;
+}
+
+.client-project span { color: rgba(255,255,255,0.8); font-weight: 500; }
+
+.client-magic {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  color: rgba(255,255,255,0.4);
+}
+
+.client-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--teal);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 600; color: #fff;
+}
+
+.client-body {
+  flex: 1;
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.client-greeting {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.client-sub { font-size: 14px; color: var(--muted); }
+
+/* project status card */
+.status-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.status-header {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.status-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.phase-pills {
+  display: flex;
+  gap: 0;
+  padding: 16px 20px;
+}
+
+.phase-pill {
+  flex: 1;
+  text-align: center;
+  padding: 8px 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border);
+  position: relative;
+}
+
+.phase-pill.done { color: var(--teal); border-bottom-color: var(--teal); }
+.phase-pill.active {
+  color: var(--ink);
+  font-weight: 600;
+  border-bottom-color: var(--teal);
+  background: var(--teal-l);
+  border-radius: 6px 6px 0 0;
+}
+
+/* action card */
+.action-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.action-card.needs-action {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px var(--teal-l);
+}
+
+.action-banner {
+  background: var(--teal);
+  padding: 10px 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: .02em;
+}
+
+.action-body { padding: 20px; }
+
+.action-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+.action-meta {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.action-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.action-meta-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+.action-meta-value { font-size: 13px; font-weight: 500; color: var(--ink); }
+
+.briefing-preview {
+  background: var(--surf);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+
+.briefing-row { display: flex; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.briefing-row:last-child { border-bottom: none; }
+.briefing-key { font-weight: 600; color: var(--ink); min-width: 130px; flex-shrink: 0; }
+.briefing-val { color: var(--muted); }
+
+.action-btns { display: flex; gap: 8px; }
+
+.btn-approve { background: var(--teal); color: #fff; padding: 9px 20px; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Outfit', sans-serif; }
+.btn-comment { background: transparent; border: 1px solid var(--border2); color: var(--muted); padding: 9px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Outfit', sans-serif; }
+
+/* timeline */
+.timeline { padding: 16px 20px; }
+.tl-item { display: flex; gap: 12px; padding: 8px 0; }
+.tl-dot-wrap { display: flex; flex-direction: column; align-items: center; }
+.tl-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border2); margin-top: 3px; flex-shrink: 0; }
+.tl-dot.done { background: var(--teal); }
+.tl-dot.now { background: var(--amber); }
+.tl-line { flex: 1; width: 1px; background: var(--border); margin: 2px 0; }
+.tl-content { flex: 1; padding-bottom: 12px; }
+.tl-date { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); margin-bottom: 2px; }
+.tl-text { font-size: 13px; font-weight: 500; color: var(--ink); }
+.tl-sub  { font-size: 12px; color: var(--muted); margin-top: 1px; }
+
+/* ══════════════════════════════════════════════
+   SCREEN 4 — PAINEL ADMIN
+══════════════════════════════════════════════ */
+
+.admin-layout {
+  display: flex;
+  height: calc(100vh - 44px);
+}
+
+.admin-sidebar {
+  width: 200px;
+  background: #060E1A;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1rem;
+}
+
+.admin-brand {
+  padding: 16px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  margin-bottom: 8px;
+}
+
+.admin-brand-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+.admin-brand-url {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--teal);
+  margin-top: 2px;
+}
+
+.admin-content { flex: 1; overflow-y: auto; background: var(--surf); }
+
+/* kpi grid */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  padding: 20px 24px 0;
+}
+
+.kpi-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+
+.kpi-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.kpi-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.kpi-sub {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.kpi-trend {
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.trend-up { background: var(--teal-l); color: var(--teal-d); }
+.trend-down { background: var(--red-l); color: var(--red); }
+
+/* tenant table */
+.tenant-table-wrap {
+  margin: 20px 24px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table-header {
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.table-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.search-input {
+  margin-left: auto;
+  background: var(--surf);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 12.5px;
+  font-family: 'Outfit', sans-serif;
+  color: var(--ink);
+  width: 180px;
+  outline: none;
+}
+
+.search-input:focus { border-color: var(--teal); }
+
+.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+.data-table th {
+  text-align: left;
+  padding: 9px 14px;
+  background: var(--surf);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--surf); }
+
+.tenant-name { font-weight: 600; color: var(--ink); }
+.tenant-domain { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--teal); }
+.tenant-plan { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+.plan-basic { background: var(--blue-l); color: var(--blue); }
+.plan-pro   { background: var(--teal-l); color: var(--teal-d); }
+.plan-ent   { background: #EDE9FE; color: #5B21B6; }
+
+.ai-bar { display: flex; align-items: center; gap: 7px; }
+.ai-bar-track { flex: 1; height: 4px; background: var(--surf2); border-radius: 2px; min-width: 60px; }
+.ai-bar-fill { height: 100%; border-radius: 2px; background: var(--teal); }
+.ai-bar-fill.warn { background: var(--amber); }
+.ai-bar-fill.danger { background: var(--red); }
+.ai-bar-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); white-space: nowrap; }
+
+.row-actions { display: flex; gap: 6px; }
+.act-btn { font-size: 11px; padding: 4px 9px; border-radius: 5px; border: 1px solid var(--border2); background: transparent; color: var(--muted); cursor: pointer; font-family: 'Outfit', sans-serif; }
+.act-btn:hover { background: var(--surf2); color: var(--ink); }
+.act-btn.act-setup { border-color: var(--teal); color: var(--teal); }
+.act-btn.act-setup:hover { background: var(--teal-l); }
+
+/* ai cost monitor */
+.cost-section {
+  margin: 0 24px 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.cost-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+
+.cost-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 12px; }
+
+.cost-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.cost-item:last-child { border-bottom: none; }
+
+.cost-tenant { font-size: 12.5px; font-weight: 500; color: var(--ink); flex: 1; }
+.cost-amount { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; }
+.cost-pct { font-size: 11px; font-weight: 600; padding: 1px 6px; border-radius: 3px; }
+.pct-ok { background: var(--teal-l); color: var(--teal-d); }
+.pct-warn { background: var(--amber-l); color: #92520A; }
+.pct-danger { background: var(--red-l); color: var(--red); }
+
+/* helpers */
+.mt8  { margin-top: 8px; }
+.mt16 { margin-top: 16px; }
+.flex-center { display: flex; align-items: center; gap: 8px; }
+.sep { flex: 1; height: 1px; background: var(--border); }
+.dot8 { width: 8px; height: 8px; border-radius: 50%; }
+
+/* scrollbars */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <div class="tab-brand"><span></span>BRIF</div>
+  <button class="tab active" onclick="show('briefing')">Transcrição & Briefing</button>
+  <button class="tab" onclick="show('kanban')">Kanban de Tarefas</button>
+  <button class="tab" onclick="show('portal')">Portal do Cliente</button>
+  <button class="tab" onclick="show('admin')">Painel Admin</button>
+  <div class="tab-label">wireframes · v1</div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN 1 — BRIEFING
+════════════════════════════════════════ -->
+<div class="screen active" id="briefing">
+  <div class="app-layout">
+    <!-- sidebar -->
+    <div class="sidebar">
+      <div style="padding: 14px 14px 8px;">
+        <div class="sidebar-project">
+          <div class="sp-label">Projeto ativo</div>
+          <div class="sp-name">Campanha Verão 2025 · Natura</div>
+          <div class="sp-phase">● Fase: Briefing</div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">Menu</div>
+      <div class="sidebar-item active">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M5 5.5h6M5 8h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Briefing
+        <span class="sidebar-badge">1</span>
+      </div>
+      <div class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="3" height="10" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="6.5" y="5" width="3" height="8" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="11" y="1" width="3" height="12" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>
+        Tarefas
+      </div>
+      <div class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5 2v2M11 2v2M2 7h12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Calendário
+      </div>
+      <div class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none"><path d="M2 13l4-4 3 3 5-7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Proposta
+      </div>
+      <div class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none"><path d="M4 8h8M4 5h8M4 11h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Documentos
+      </div>
+
+      <div class="sidebar-section" style="margin-top: 8px;">Projetos</div>
+      <div class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="2" fill="currentColor"/></svg>
+        Rebrand · Havaianas
+      </div>
+      <div class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="2" fill="currentColor"/></svg>
+        Digital · XP Inc
+      </div>
+
+      <div class="sidebar-avatar">
+        <div class="avatar-circle">GP</div>
+        <div>
+          <div class="avatar-name">Gerente de Projetos</div>
+          <div class="avatar-role">Natura · Verão 2025</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- content -->
+    <div class="content">
+      <div class="topbar">
+        <div>
+          <div class="topbar-crumb">Campanha Verão 2025 · Natura <span>/ Briefing</span></div>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-ghost btn-sm">Exportar</button>
+          <button class="btn btn-primary btn-sm">Aprovar Briefing</button>
+        </div>
+      </div>
+
+      <div class="page">
+        <!-- progress steps -->
+        <div class="flow-steps">
+          <div class="flow-step done">
+            <div class="flow-num">✓</div> Gravação enviada
+          </div>
+          <div class="flow-step done">
+            <div class="flow-num">✓</div> Transcrição gerada
+          </div>
+          <div class="flow-step active">
+            <div class="flow-num">3</div> Revisão do Planner
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">4</div> Aprovação gerente
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">5</div> Confirmação cliente
+          </div>
+        </div>
+
+        <!-- main 2 col -->
+        <div class="two-col">
+          <!-- left: transcrição -->
+          <div style="display:flex; flex-direction:column; gap:16px;">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Gravação da Reunião</div>
+                <span class="card-tag tag-teal">Transcrita</span>
+                <span class="card-tag tag-gray" style="margin-left:auto;">58 min</span>
+              </div>
+              <div class="card-body">
+                <div class="audio-player">
+                  <div class="play-btn">
+                    <svg width="12" height="14" viewBox="0 0 12 14" fill="white"><path d="M1 1l10 6-10 6V1z"/></svg>
+                  </div>
+                  <div class="waveform">
+                    <!-- bars played -->
+                    <div class="waveform-bar played" style="height:40%"></div>
+                    <div class="waveform-bar played" style="height:70%"></div>
+                    <div class="waveform-bar played" style="height:55%"></div>
+                    <div class="waveform-bar played" style="height:85%"></div>
+                    <div class="waveform-bar played" style="height:45%"></div>
+                    <div class="waveform-bar played" style="height:90%"></div>
+                    <div class="waveform-bar played" style="height:60%"></div>
+                    <div class="waveform-bar played" style="height:35%"></div>
+                    <div class="waveform-bar played" style="height:75%"></div>
+                    <div class="waveform-bar played" style="height:50%"></div>
+                    <!-- unplayed -->
+                    <div class="waveform-bar" style="height:80%"></div>
+                    <div class="waveform-bar" style="height:45%"></div>
+                    <div class="waveform-bar" style="height:65%"></div>
+                    <div class="waveform-bar" style="height:90%"></div>
+                    <div class="waveform-bar" style="height:40%"></div>
+                    <div class="waveform-bar" style="height:55%"></div>
+                    <div class="waveform-bar" style="height:75%"></div>
+                    <div class="waveform-bar" style="height:30%"></div>
+                    <div class="waveform-bar" style="height:60%"></div>
+                    <div class="waveform-bar" style="height:85%"></div>
+                  </div>
+                  <div class="audio-time">24:12 / 58:30</div>
+                </div>
+
+                <div class="transcript-area">
+                  <div class="speaker">
+                    <span>● CLIENTE (ANA LIMA)</span>
+                    <span class="speaker-time">00:02:14</span>
+                  </div>
+                  <div class="transcript-text">A campanha precisa focar muito no conceito de sustentabilidade. A Natura está lançando uma nova linha de produtos com embalagem 100% reciclável e queremos que isso seja o centro da comunicação...</div>
+
+                  <div class="speaker speaker-b">
+                    <span>● PLANNER (RODRIGO M.)</span>
+                    <span class="speaker-time">00:04:38</span>
+                  </div>
+                  <div class="transcript-text">Entendido. E qual o público principal? Vocês falaram de 25 a 40 anos — isso inclui o perfil mais consciente ambientalmente ou também o público premium?</div>
+
+                  <div class="speaker">
+                    <span>● CLIENTE (ANA LIMA)</span>
+                    <span class="speaker-time">00:05:12</span>
+                  </div>
+                  <div class="transcript-text">Principalmente o consciente, mas sem abrir mão do aspiracional. Orçamento total aprovado é R$ 280 mil, sendo R$ 180 mil para mídia digital e R$ 100 mil para ativações. Prazo de entrega da proposta: 20 de dezembro...</div>
+
+                  <div class="speaker speaker-b">
+                    <span>● GERENTE (PAULA S.)</span>
+                    <span class="speaker-time">00:08:45</span>
+                  </div>
+                  <div class="transcript-text">Perfeito. E quanto ao tom de comunicação — vocês preferem algo mais emocional ou mais informativo sobre os atributos da nova linha?</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- right: briefing consolidado -->
+          <div style="display:flex; flex-direction:column; gap:14px;">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Briefing Consolidado</div>
+                <span class="card-tag tag-amber">IA gerado</span>
+              </div>
+              <div class="card-body">
+                <div class="brief-field">
+                  <div class="brief-label">Objetivo da campanha</div>
+                  <div class="brief-value highlight">Lançamento da nova linha sustentável Natura com foco em embalagem reciclável. Posicionamento aspiracional e consciente simultaneamente.</div>
+                </div>
+                <div class="brief-field">
+                  <div class="brief-label">Público-alvo</div>
+                  <div class="brief-value">25–40 anos, perfil consciente ambientalmente e aspiracional. Predominante classes A e B.</div>
+                </div>
+                <div class="brief-field">
+                  <div class="brief-label">Tom de voz</div>
+                  <div class="brief-value">Emocional com base informativa. Autêntico, próximo, inspirador.</div>
+                </div>
+                <div class="brief-field">
+                  <div class="brief-label">Entregas esperadas</div>
+                  <div class="brief-value">Conceito criativo, peças digitais (stories, feed, banner), ativações presenciais, kit imprensa.</div>
+                </div>
+                <div class="brief-field">
+                  <div class="brief-label">Orçamento total</div>
+                  <div class="brief-value">R$ 280.000 — R$180k mídia digital / R$100k ativações</div>
+                </div>
+                <div class="brief-field">
+                  <div class="brief-label">Prazo de entrega</div>
+                  <div class="brief-value">20 de dezembro de 2025</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- approval status -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Status de Aprovação</div>
+              </div>
+              <div class="card-body">
+                <div class="approval-steps">
+                  <div class="apv-step done">
+                    <div class="apv-circle">✓</div>
+                    <div class="apv-label">Planner<br>revisou</div>
+                  </div>
+                  <div class="apv-step active">
+                    <div class="apv-circle">→</div>
+                    <div class="apv-label">Gerente<br>aprovando</div>
+                  </div>
+                  <div class="apv-step pending">
+                    <div class="apv-circle">3</div>
+                    <div class="apv-label">Cliente<br>confirma</div>
+                  </div>
+                </div>
+                <button class="btn btn-primary" style="width:100%; margin-top:14px; font-size:13px;">Aprovar e enviar ao cliente</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN 2 — KANBAN
+════════════════════════════════════════ -->
+<div class="screen" id="kanban">
+  <div class="app-layout">
+    <div class="sidebar">
+      <div style="padding: 14px 14px 8px;">
+        <div class="sidebar-project">
+          <div class="sp-label">Projeto ativo</div>
+          <div class="sp-name">Campanha Verão 2025 · Natura</div>
+          <div class="sp-phase">● Fase: Criação</div>
+        </div>
+      </div>
+      <div class="sidebar-section">Menu</div>
+      <div class="sidebar-item"><svg class="sidebar-icon" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M5 5.5h6M5 8h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Briefing</div>
+      <div class="sidebar-item active"><svg class="sidebar-icon" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="3" height="10" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="6.5" y="5" width="3" height="8" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="11" y="1" width="3" height="12" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>Tarefas</div>
+      <div class="sidebar-item"><svg class="sidebar-icon" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5 2v2M11 2v2M2 7h12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Calendário</div>
+      <div class="sidebar-item"><svg class="sidebar-icon" viewBox="0 0 16 16" fill="none"><path d="M2 13l4-4 3 3 5-7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Proposta</div>
+      <div class="sidebar-item"><svg class="sidebar-icon" viewBox="0 0 16 16" fill="none"><path d="M4 8h8M4 5h8M4 11h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Documentos</div>
+      <div class="sidebar-avatar">
+        <div class="avatar-circle" style="background:#2D7DD2;">PL</div>
+        <div>
+          <div class="avatar-name">Planner</div>
+          <div class="avatar-role">Natura · Verão 2025</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="topbar">
+        <div class="topbar-title">Kanban de Tarefas</div>
+        <div class="topbar-crumb" style="margin-left:8px; padding-left:8px; border-left:1px solid var(--border);">Criação / Verão 2025</div>
+        <div class="topbar-actions">
+          <button class="btn btn-ghost btn-sm">Filtrar</button>
+          <button class="btn btn-ghost btn-sm">Lista</button>
+          <button class="btn btn-primary btn-sm">+ Nova tarefa</button>
+        </div>
+      </div>
+
+      <div class="kanban-board">
+        <!-- col 1: a fazer -->
+        <div class="kanban-col">
+          <div class="col-header">
+            <div class="col-dot" style="background:#94A3B8;"></div>
+            <div class="col-name">A fazer</div>
+            <div class="col-count">3</div>
+          </div>
+
+          <div class="task-card">
+            <div class="task-tag tag-teal">Criação</div>
+            <div class="task-name">Moodboard — linha sustentável</div>
+            <div class="task-desc">Referências visuais para o conceito de sustentabilidade e embalagem reciclável.</div>
+            <div class="task-meta">
+              <div class="task-assignee" style="background:#E09B2A;" title="Designer">DS</div>
+              <div class="task-files">📎 0</div>
+              <div class="task-due">18 nov</div>
+            </div>
+          </div>
+
+          <div class="task-card">
+            <div class="task-tag tag-blue">Estratégia</div>
+            <div class="task-name">Estudo de viabilidade — ativações</div>
+            <div class="task-desc">Levantar fornecedores e custos para as ativações presenciais dentro do budget de R$100k.</div>
+            <div class="task-meta">
+              <div class="task-assignee" style="background:#8B5CF6;" title="Produtor">PE</div>
+              <div class="task-files">📎 2</div>
+              <div class="task-due">22 nov</div>
+            </div>
+          </div>
+
+          <div class="task-card">
+            <div class="task-tag tag-gray">Financeiro</div>
+            <div class="task-name">Planilha orçamentária consolidada</div>
+            <div class="task-desc">Compilar todos os itens de custo por categoria.</div>
+            <div class="task-meta">
+              <div class="task-assignee" style="background:#DC3545;" title="Financeiro">FN</div>
+              <div class="task-files">📎 0</div>
+              <div class="task-due late">Atrasado</div>
+            </div>
+          </div>
+
+          <div class="add-task">+ Adicionar tarefa</div>
+        </div>
+
+        <!-- col 2: em progresso -->
+        <div class="kanban-col">
+          <div class="col-header">
+            <div class="col-dot" style="background:#E09B2A;"></div>
+            <div class="col-name">Em progresso</div>
+            <div class="col-count">2</div>
+          </div>
+
+          <div class="task-card review">
+            <div class="task-tag tag-teal">Criação</div>
+            <div class="task-name">Conceito criativo — Campanha</div>
+            <div class="task-desc">Proposta inicial de conceito e tagline para aprovação interna antes da apresentação.</div>
+            <div class="task-meta">
+              <div class="task-assignee" style="background:#0D9E78;" title="Planner">PL</div>
+              <div class="task-assignee" style="background:#E09B2A; margin-left:-8px;" title="Designer">DS</div>
+              <div class="task-files">📎 3</div>
+              <div class="task-due">15 nov</div>
+            </div>
+          </div>
+
+          <div class="task-card">
+            <div class="task-tag tag-amber">Deck</div>
+            <div class="task-name">Estrutura da proposta visual</div>
+            <div class="task-desc">Montar estrutura de seções para geração da proposta via IA no BRIF.</div>
+            <div class="task-meta">
+              <div class="task-assignee" style="background:#0D9E78;">PL</div>
+              <div class="task-files">📎 1</div>
+              <div class="task-due">16 nov</div>
+            </div>
+          </div>
+
+          <div class="add-task">+ Adicionar tarefa</div>
+        </div>
+
+        <!-- col 3: revisão -->
+        <div class="kanban-col">
+          <div class="col-header">
+            <div class="col-dot" style="background:#2D7DD2;"></div>
+            <div class="col-name">Em revisão</div>
+            <div class="col-count">1</div>
+          </div>
+
+          <div class="task-card urgent">
+            <div class="task-tag tag-red">Urgente</div>
+            <div class="task-name">Peças gráficas mockup — digital</div>
+            <div class="task-desc">Feed, stories e banner — aguardando aprovação do gerente para envio ao cliente.</div>
+            <div class="task-meta">
+              <div class="task-assignee" style="background:#E09B2A;">DS</div>
+              <div class="task-files">📎 8</div>
+              <div class="task-due">Hoje</div>
+            </div>
+          </div>
+
+          <div class="add-task">+ Adicionar tarefa</div>
+        </div>
+
+        <!-- col 4: concluído -->
+        <div class="kanban-col">
+          <div class="col-header">
+            <div class="col-dot" style="background:#0D9E78;"></div>
+            <div class="col-name">Concluído</div>
+            <div class="col-count">4</div>
+          </div>
+
+          <div class="task-card" style="opacity:.65;">
+            <div class="task-tag tag-teal">Briefing</div>
+            <div class="task-name">Transcrição e consolidação do briefing</div>
+            <div class="task-meta">
+              <div class="task-assignee" style="background:#0D9E78;">PL</div>
+              <div class="task-due" style="color:var(--teal);">✓ 10 nov</div>
+            </div>
+          </div>
+
+          <div class="task-card" style="opacity:.65;">
+            <div class="task-tag tag-gray">Setup</div>
+            <div class="task-name">Kick-off interno e alinhamento de equipe</div>
+            <div class="task-meta">
+              <div class="task-assignee" style="background:#152238;">GP</div>
+              <div class="task-due" style="color:var(--teal);">✓ 08 nov</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN 3 — PORTAL DO CLIENTE
+════════════════════════════════════════ -->
+<div class="screen" id="portal">
+  <div class="client-portal">
+    <div class="client-header">
+      <div class="client-brand">Agência Exemplo</div>
+      <div class="client-project">Projeto: <span>Campanha Verão 2025</span></div>
+      <div class="client-magic">
+        <div class="client-avatar">AL</div>
+        Ana Lima · Natura
+      </div>
+    </div>
+
+    <div class="client-body">
+      <div>
+        <div class="client-greeting">Olá, Ana!</div>
+        <div class="client-sub">Aqui está o status atualizado do seu projeto. Uma ação aguarda sua revisão.</div>
+      </div>
+
+      <!-- status do projeto -->
+      <div class="status-card">
+        <div class="status-header">
+          <div class="status-title">Status do Projeto</div>
+          <span class="card-tag tag-amber" style="margin-left:auto;">Fase: Briefing</span>
+        </div>
+        <div class="phase-pills">
+          <div class="phase-pill done">Briefing</div>
+          <div class="phase-pill active">Criação</div>
+          <div class="phase-pill">Aprovação</div>
+          <div class="phase-pill">Produção</div>
+          <div class="phase-pill">Entrega</div>
+        </div>
+
+        <div style="padding: 0 20px 16px;">
+          <div style="height:6px; background:var(--surf2); border-radius:3px; overflow:hidden; margin-bottom:8px;">
+            <div style="height:100%; width:28%; background:var(--teal); border-radius:3px;"></div>
+          </div>
+          <div style="font-size:12px; color:var(--muted);">Progresso geral: <strong style="color:var(--teal);">28%</strong> · Próxima entrega: Conceito criativo — 15 nov</div>
+        </div>
+      </div>
+
+      <!-- ação pendente -->
+      <div class="action-card needs-action">
+        <div class="action-banner">
+          ✦ Ação necessária — Aprovação de briefing pendente
+        </div>
+        <div class="action-body">
+          <div class="action-title">Briefing Consolidado — Campanha Verão 2025</div>
+          <div class="action-meta">
+            <div class="action-meta-item">
+              <div class="action-meta-label">Gerado em</div>
+              <div class="action-meta-value">10 nov 2025</div>
+            </div>
+            <div class="action-meta-item">
+              <div class="action-meta-label">Revisado por</div>
+              <div class="action-meta-value">Planner + Gerente</div>
+            </div>
+            <div class="action-meta-item">
+              <div class="action-meta-label">Versão</div>
+              <div class="action-meta-value">v1.0</div>
+            </div>
+          </div>
+
+          <div class="briefing-preview">
+            <div class="briefing-row"><div class="briefing-key">Objetivo</div><div class="briefing-val">Lançamento linha sustentável — embalagem reciclável como centro da comunicação</div></div>
+            <div class="briefing-row"><div class="briefing-key">Público-alvo</div><div class="briefing-val">25–40 anos, consciente ambiental + aspiracional, classes A/B</div></div>
+            <div class="briefing-row"><div class="briefing-key">Tom de voz</div><div class="briefing-val">Emocional com base informativa. Autêntico, inspirador.</div></div>
+            <div class="briefing-row"><div class="briefing-key">Orçamento total</div><div class="briefing-val">R$ 280.000</div></div>
+            <div class="briefing-row"><div class="briefing-key">Prazo de entrega</div><div class="briefing-val">20 de dezembro de 2025</div></div>
+          </div>
+
+          <div class="action-btns">
+            <button class="btn-approve">Confirmar briefing</button>
+            <button class="btn-comment">Solicitar ajuste</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- timeline -->
+      <div class="status-card">
+        <div class="status-header">
+          <div class="status-title">Histórico do Projeto</div>
+        </div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot-wrap"><div class="tl-dot done"></div><div class="tl-line"></div></div>
+            <div class="tl-content">
+              <div class="tl-date">08 nov 2025</div>
+              <div class="tl-text">Projeto iniciado</div>
+              <div class="tl-sub">Kick-off interno realizado · Equipe alocada</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot-wrap"><div class="tl-dot done"></div><div class="tl-line"></div></div>
+            <div class="tl-content">
+              <div class="tl-date">10 nov 2025</div>
+              <div class="tl-text">Reunião de briefing transcrita</div>
+              <div class="tl-sub">58 minutos · IA gerou briefing consolidado</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot-wrap"><div class="tl-dot now"></div><div class="tl-line"></div></div>
+            <div class="tl-content">
+              <div class="tl-date">Agora</div>
+              <div class="tl-text">Aguardando sua confirmação do briefing</div>
+              <div class="tl-sub">Após aprovação, a equipe inicia a criação</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+            <div class="tl-content">
+              <div class="tl-date">Previsto: 20 nov</div>
+              <div class="tl-text">Apresentação do conceito criativo</div>
+              <div class="tl-sub">Proposta visual completa com moodboard</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN 4 — PAINEL ADMIN
+════════════════════════════════════════ -->
+<div class="screen" id="admin">
+  <div class="admin-layout">
+    <div class="admin-sidebar">
+      <div class="admin-brand">
+        <div class="admin-brand-name">BRIF</div>
+        <div class="admin-brand-url">admin.brif.app</div>
+      </div>
+
+      <div class="sidebar-section">Visão geral</div>
+      <div class="sidebar-item active" style="color:rgba(255,255,255,.85);">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>
+        Dashboard
+      </div>
+      <div class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M2 13c0-2.21 2.686-4 6-4s6 1.79 6 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Tenants
+        <span class="sidebar-badge" style="margin-left:auto;">12</span>
+      </div>
+      <div class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none"><path d="M8 2v4l2.5 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/></svg>
+        Onboarding
+      </div>
+      <div class="sidebar-section">Financeiro</div>
+      <div class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5 4V3a1 1 0 011-1h4a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.3"/></svg>
+        Billing
+      </div>
+      <div class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none"><path d="M2 13l4-4 3 3 5-7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Custo de IA
+        <span class="sidebar-badge" style="background:var(--amber); margin-left:auto;">!</span>
+      </div>
+    </div>
+
+    <div class="admin-content">
+      <div class="topbar" style="padding: 12px 24px;">
+        <div class="topbar-title" style="font-size:15px;">Dashboard</div>
+        <div class="topbar-actions">
+          <button class="btn btn-primary btn-sm">+ Novo Tenant</button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Tenants ativos</div>
+          <div class="kpi-value">12</div>
+          <div class="kpi-sub">8 Basic · 4 Pro</div>
+          <div class="kpi-trend trend-up">↑ +2 este mês</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">MRR</div>
+          <div class="kpi-value">R$5.1k</div>
+          <div class="kpi-sub">meta: R$5.000</div>
+          <div class="kpi-trend trend-up">↑ Meta atingida</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Churn mensal</div>
+          <div class="kpi-value">0%</div>
+          <div class="kpi-sub">0 cancelamentos</div>
+          <div class="kpi-trend trend-up">↑ Abaixo de 3%</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Custo IA / Receita</div>
+          <div class="kpi-value">11.2%</div>
+          <div class="kpi-sub">meta: &lt;15%</div>
+          <div class="kpi-trend trend-up">↑ Dentro do limite</div>
+        </div>
+      </div>
+
+      <!-- Tenant table -->
+      <div class="tenant-table-wrap">
+        <div class="table-header">
+          <div class="table-title">Tenants</div>
+          <button class="btn btn-ghost btn-sm">Filtrar plano</button>
+          <input class="search-input" placeholder="Buscar agência..." value="">
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Agência</th>
+              <th>Domínio</th>
+              <th>Plano</th>
+              <th>Usuários</th>
+              <th>Uso IA / mês</th>
+              <th>Onboarding</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="tenant-name">Agência Criativa SP</div><div style="font-size:11px;color:var(--muted);">desde 02 ago 2025</div></td>
+              <td><div class="tenant-domain">criativasp.brif.app</div></td>
+              <td><span class="tenant-plan plan-pro">Pro</span></td>
+              <td>14</td>
+              <td>
+                <div class="ai-bar">
+                  <div class="ai-bar-track"><div class="ai-bar-fill" style="width:68%;"></div></div>
+                  <div class="ai-bar-label">408/600 min</div>
+                </div>
+              </td>
+              <td><span class="card-tag tag-teal">Completo</span></td>
+              <td><div class="row-actions"><button class="act-btn">Ver</button><button class="act-btn">Entrar</button></div></td>
+            </tr>
+            <tr>
+              <td><div class="tenant-name">WE.DO Comunicação</div><div style="font-size:11px;color:var(--muted);">desde 15 set 2025</div></td>
+              <td><div class="tenant-domain">app.wedo.com.br</div></td>
+              <td><span class="tenant-plan plan-pro">Pro</span></td>
+              <td>8</td>
+              <td>
+                <div class="ai-bar">
+                  <div class="ai-bar-track"><div class="ai-bar-fill warn" style="width:88%;"></div></div>
+                  <div class="ai-bar-label">530/600 min</div>
+                </div>
+              </td>
+              <td><span class="card-tag tag-teal">Completo</span></td>
+              <td><div class="row-actions"><button class="act-btn">Ver</button><button class="act-btn">Entrar</button></div></td>
+            </tr>
+            <tr>
+              <td><div class="tenant-name">Pixel & Co</div><div style="font-size:11px;color:var(--muted);">desde 01 out 2025</div></td>
+              <td><div class="tenant-domain">pixelco.brif.app</div></td>
+              <td><span class="tenant-plan plan-basic">Basic</span></td>
+              <td>3</td>
+              <td>
+                <div class="ai-bar">
+                  <div class="ai-bar-track"><div class="ai-bar-fill" style="width:30%;"></div></div>
+                  <div class="ai-bar-label">36/120 min</div>
+                </div>
+              </td>
+              <td><span class="card-tag tag-teal">Completo</span></td>
+              <td><div class="row-actions"><button class="act-btn">Ver</button><button class="act-btn">Entrar</button></div></td>
+            </tr>
+            <tr>
+              <td><div class="tenant-name">Urban Brand Studio</div><div style="font-size:11px;color:var(--muted);">desde 10 nov 2025</div></td>
+              <td><div class="tenant-domain">urban.brif.app</div></td>
+              <td><span class="tenant-plan plan-basic">Basic</span></td>
+              <td>—</td>
+              <td>
+                <div class="ai-bar">
+                  <div class="ai-bar-track"><div class="ai-bar-fill" style="width:0%;"></div></div>
+                  <div class="ai-bar-label">0/120 min</div>
+                </div>
+              </td>
+              <td><span class="card-tag tag-amber">Em setup</span></td>
+              <td><div class="row-actions"><button class="act-btn act-setup">Configurar</button></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- custo IA -->
+      <div class="cost-section">
+        <div class="cost-card">
+          <div class="cost-title">Custo de IA por Tenant — Novembro</div>
+          <div class="cost-item">
+            <div class="cost-tenant">WE.DO Comunicação</div>
+            <div class="cost-amount" style="color:var(--ink);">R$ 28,40</div>
+            <span class="cost-pct pct-warn">13.7%</span>
+          </div>
+          <div class="cost-item">
+            <div class="cost-tenant">Agência Criativa SP</div>
+            <div class="cost-amount" style="color:var(--ink);">R$ 21,80</div>
+            <span class="cost-pct pct-ok">10.5%</span>
+          </div>
+          <div class="cost-item">
+            <div class="cost-tenant">Pixel & Co</div>
+            <div class="cost-amount" style="color:var(--ink);">R$ 7,20</div>
+            <span class="cost-pct pct-ok">8.1%</span>
+          </div>
+          <div class="cost-item" style="border-top:1px solid var(--border); margin-top:4px; padding-top:8px;">
+            <div class="cost-tenant" style="font-weight:600;">Total plataforma</div>
+            <div class="cost-amount" style="color:var(--ink); font-weight:600;">R$ 571,60</div>
+            <span class="cost-pct pct-ok">11.2%</span>
+          </div>
+        </div>
+
+        <div class="cost-card">
+          <div class="cost-title">Onboardings em Andamento</div>
+          <div class="cost-item">
+            <div class="cost-tenant">Urban Brand Studio</div>
+            <div style="font-size:11px; color:var(--amber); font-weight:600; margin-left:auto;">Em setup</div>
+          </div>
+          <div style="margin-top:10px;">
+            <div style="font-size:12px; color:var(--muted); margin-bottom:8px;">Checklist de setup:</div>
+            <div style="display:flex;flex-direction:column;gap:6px;font-size:12.5px;">
+              <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--teal);">✓</span> Tenant criado no sistema</div>
+              <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--teal);">✓</span> Subdomínio provisionado</div>
+              <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--amber);">○</span> Logo e cores configurados</div>
+              <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--muted);">○</span> Templates de proposta</div>
+              <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--muted);">○</span> E-mail transacional</div>
+              <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--muted);">○</span> Usuários iniciais criados</div>
+            </div>
+            <button class="btn btn-primary btn-sm" style="margin-top:12px; width:100%;">Continuar setup →</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
