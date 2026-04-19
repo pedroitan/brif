@@ -70,6 +70,31 @@ export const baseConfig: Omit<Config, 'content'> = {
           surf: 'var(--brif-surf, #F8FAFC)',
           'surf-2': 'var(--brif-surf-2, #F1F5F9)',
         },
+        // Neutral colors for better legibility
+        neutral: {
+          50: '#F9FAFB',
+          100: '#F3F4F6',
+          200: '#E5E7EB',
+          300: '#D1D5DB',
+          400: '#9CA3AF',
+          500: '#6B7280',
+          600: '#4B5563',
+          700: '#374151',
+          800: '#1F2937',
+          900: '#111827',
+        },
+        // Text colors
+        text: {
+          primary: 'var(--text-primary, #374151)',
+          secondary: 'var(--text-secondary, #6B7280)',
+          muted: 'var(--text-muted, #9CA3AF)',
+        },
+        // Background colors
+        bg: {
+          primary: 'var(--bg-primary, #FFFFFF)',
+          secondary: 'var(--bg-secondary, #F9FAFB)',
+          tertiary: 'var(--bg-tertiary, #F3F4F6)',
+        },
       },
       fontFamily: {
         sans: ['var(--font-outfit)', 'system-ui', 'sans-serif'],

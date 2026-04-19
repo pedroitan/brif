@@ -16,7 +16,7 @@ type AppShellProps = {
  */
 export function AppShell({ projects, user, children }: AppShellProps) {
   return (
-    <div className="flex h-screen flex-col bg-brif-surf">
+    <div className="flex h-screen flex-col bg-neutral-50">
       {/* Tab bar superior (brand + logout) */}
       <header className="sticky top-0 z-50 flex items-center gap-2 bg-brif-navy px-4 py-2.5">
         <Link

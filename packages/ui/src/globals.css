@@ -17,7 +17,7 @@
     --card-foreground: 219 30% 14%;
     --popover: 0 0% 100%;
     --popover-foreground: 219 30% 14%;
-    --primary: 163 85% 34%;          /* #0D9E78 teal */
+    --primary: var(--brand-primary-h, 163) var(--brand-primary-s, 85%) var(--brand-primary-l, 34%);          /* brand color or teal fallback */
     --primary-foreground: 0 0% 100%;
     --secondary: 214 32% 96%;        /* #F1F5F9 surf2 */
     --secondary-foreground: 219 30% 14%;
@@ -54,8 +54,16 @@
 
     /* Whitelabel override - these can be set via env vars in layout */
     --brand-primary: var(--brif-teal);
-    --brand-accent: var(--brif-blue);
+    --brand-accent: var(--brif-amber);
     --brand-bg: var(--brif-surf);
+    
+    /* Neutral colors for better legibility */
+    --text-primary: #374151;
+    --text-secondary: #6B7280;
+    --text-muted: #9CA3AF;
+    --bg-primary: #FFFFFF;
+    --bg-secondary: #F9FAFB;
+    --bg-tertiary: #F3F4F6;
   }
 }
 
