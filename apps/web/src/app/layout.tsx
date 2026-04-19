@@ -28,6 +28,10 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  console.log('Brand color env:', process.env.NEXT_PUBLIC_BRAND_COLOR);
+  console.log('Accent color env:', process.env.NEXT_PUBLIC_ACCENT_COLOR);
+  console.log('BG color env:', process.env.NEXT_PUBLIC_BG_COLOR);
+  
   return (
     <html
       lang="pt-BR"
