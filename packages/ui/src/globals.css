@@ -32,29 +32,30 @@
     --ring: 163 85% 34%;
     --radius: 0.625rem;
 
-    /* BRIF brand tokens (direto, hex) - NIBS palette override */
-    --brif-navy: #4A085D;
-    --brif-navy-2: #670A73;
-    --brif-navy-3: #7D088C;
-    --brif-teal: #4A085D;
-    --brif-teal-d: #670A73;
-    --brif-teal-l: #FFF9FF;
-    --brif-amber: #F2BF80;
-    --brif-amber-l: #FFF9FF;
-    --brif-red: #7D088C;
-    --brif-red-l: #FFF9FF;
-    --brif-blue: #7D088C;
-    --brif-blue-l: #FFF9FF;
-    --brif-ink: #4A085D;
-    --brif-muted: #670A73;
+    /* BRIF brand tokens (direto, hex) - defaults, can be overridden by env vars */
+    --brif-navy: #0B1829;
+    --brif-navy-2: #152238;
+    --brif-navy-3: #1E3251;
+    --brif-teal: #0D9E78;
+    --brif-teal-d: #0A7D60;
+    --brif-teal-l: #E6F7F2;
+    --brif-amber: #E09B2A;
+    --brif-amber-l: #FEF6E4;
+    --brif-red: #DC3545;
+    --brif-red-l: #FDECEA;
+    --brif-blue: #2D7DD2;
+    --brif-blue-l: #EBF3FC;
+    --brif-ink: #1A2130;
+    --brif-muted: #6B7A8D;
     --brif-border: #E2E8F0;
     --brif-border-2: #CBD5E0;
-    --brif-surf: #FFF9FF;
-    --brif-surf-2: #FFF9FF;
+    --brif-surf: #F8FAFC;
+    --brif-surf-2: #F1F5F9;
 
-    /* Whitelabel override - these can be set via env vars */
+    /* Whitelabel override - these can be set via env vars in layout */
     --brand-primary: var(--brif-teal);
-    --brand-accent: var(--brif-amber);
+    --brand-accent: var(--brif-blue);
+    --brand-bg: var(--brif-surf);
   }
 }
 

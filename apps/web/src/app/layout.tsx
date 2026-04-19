@@ -40,6 +40,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               :root {
                 ${process.env.NEXT_PUBLIC_BRAND_COLOR ? `--brand-primary: ${process.env.NEXT_PUBLIC_BRAND_COLOR};` : ''}
                 ${process.env.NEXT_PUBLIC_ACCENT_COLOR ? `--brand-accent: ${process.env.NEXT_PUBLIC_ACCENT_COLOR};` : ''}
+                ${process.env.NEXT_PUBLIC_BG_COLOR ? `--brand-bg: ${process.env.NEXT_PUBLIC_BG_COLOR};` : ''}
+                ${process.env.NEXT_PUBLIC_BRAND_COLOR ? `--brif-navy: ${process.env.NEXT_PUBLIC_BRAND_COLOR};` : ''}
+                ${process.env.NEXT_PUBLIC_BRAND_COLOR ? `--brif-navy-2: ${process.env.NEXT_PUBLIC_BRAND_COLOR};` : ''}
+                ${process.env.NEXT_PUBLIC_BRAND_COLOR ? `--brif-navy-3: ${process.env.NEXT_PUBLIC_BRAND_COLOR};` : ''}
+                ${process.env.NEXT_PUBLIC_BRAND_COLOR ? `--brif-teal: ${process.env.NEXT_PUBLIC_BRAND_COLOR};` : ''}
+                ${process.env.NEXT_PUBLIC_BRAND_COLOR ? `--brif-teal-d: ${process.env.NEXT_PUBLIC_BRAND_COLOR};` : ''}
+                ${process.env.NEXT_PUBLIC_BG_COLOR ? `--brif-teal-l: ${process.env.NEXT_PUBLIC_BG_COLOR};` : ''}
+                ${process.env.NEXT_PUBLIC_ACCENT_COLOR ? `--brif-amber: ${process.env.NEXT_PUBLIC_ACCENT_COLOR};` : ''}
+                ${process.env.NEXT_PUBLIC_BG_COLOR ? `--brif-amber-l: ${process.env.NEXT_PUBLIC_BG_COLOR};` : ''}
+                ${process.env.NEXT_PUBLIC_BRAND_COLOR ? `--brif-ink: ${process.env.NEXT_PUBLIC_BRAND_COLOR};` : ''}
+                ${process.env.NEXT_PUBLIC_BRAND_COLOR ? `--brif-muted: ${process.env.NEXT_PUBLIC_BRAND_COLOR};` : ''}
+                ${process.env.NEXT_PUBLIC_BG_COLOR ? `--brif-surf: ${process.env.NEXT_PUBLIC_BG_COLOR};` : ''}
+                ${process.env.NEXT_PUBLIC_BG_COLOR ? `--brif-surf-2: ${process.env.NEXT_PUBLIC_BG_COLOR};` : ''}
               }
             `,
           }}
