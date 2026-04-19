@@ -11,6 +11,14 @@ import {
 import { Nav } from '@/components/nav';
 import { authOptions } from '@/lib/auth';
 import { getProject } from '@/lib/actions/projetos';
+import { UploadAudio } from './upload-audio';
+
+const transcriptionLabel: Record<string, string> = {
+  PENDING: 'Aguardando',
+  PROCESSING: 'Transcrevendo…',
+  COMPLETED: 'Transcrito',
+  FAILED: 'Falhou',
+};
 
 const statusLabel: Record<string, string> = {
   DRAFT: 'Rascunho',
@@ -58,27 +66,43 @@ export default async function ProjetoDetalhePage({
 
         <Card>
           <CardHeader>
-            <CardTitle>Reuniões de briefing</CardTitle>
+            <CardTitle>Nova reunião de briefing</CardTitle>
             <CardDescription>
-              Upload de áudio, transcrição e briefing serão implementados no Sprint 3.
+              Envie o áudio da reunião com o cliente para transcrição automática.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {project.meetings.length === 0 ? (
-              <p className="text-sm text-muted-foreground">
-                Nenhuma reunião gravada ainda.
-              </p>
-            ) : (
-              <ul className="space-y-2">
+            <UploadAudio projectId={project.id} />
+          </CardContent>
+        </Card>
+
+        {project.meetings.length > 0 && (
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle>Reuniões</CardTitle>
+              <CardDescription>
+                {project.meetings.length} reunião(ões) registrada(s)
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="divide-y">
                 {project.meetings.map((m) => (
-                  <li key={m.id} className="rounded border p-3 text-sm">
-                    {m.audioFileName} · {m.transcriptionStatus}
+                  <li key={m.id}>
+                    <Link
+                      href={`/projetos/${project.id}/reuniao/${m.id}`}
+                      className="flex items-center justify-between py-3 text-sm hover:bg-accent/30 -mx-2 px-2 rounded"
+                    >
+                      <span className="truncate max-w-md">{m.audioFileName}</span>
+                      <span className="rounded-full bg-secondary px-2 py-0.5 text-xs">
+                        {transcriptionLabel[m.transcriptionStatus] ?? m.transcriptionStatus}
+                      </span>
+                    </Link>
                   </li>
                 ))}
               </ul>
-            )}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
       </main>
     </div>
   );
