@@ -10,6 +10,10 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  images: {
+    remotePatterns: [],
+    unoptimized: true,
+  },
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
     outputFileTracingIncludes: {
