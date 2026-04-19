@@ -14,10 +14,13 @@
     "clean": "rm -rf node_modules .turbo"
   },
   "dependencies": {
-    "@prisma/client": "^5.22.0"
+    "@prisma/client": "^5.22.0",
+    "bcryptjs": "^2.4.3"
   },
   "devDependencies": {
     "@brif/config": "workspace:*",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20.17.6",
     "dotenv-cli": "^7.4.2",
     "prisma": "^5.22.0",
     "tsx": "^4.19.2",

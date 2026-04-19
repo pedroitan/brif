@@ -13,12 +13,16 @@
   "dependencies": {
     "@brif/db": "workspace:*",
     "@brif/ui": "workspace:*",
+    "bcryptjs": "^2.4.3",
     "next": "14.2.15",
+    "next-auth": "^4.24.10",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@brif/config": "workspace:*",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.17.6",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
