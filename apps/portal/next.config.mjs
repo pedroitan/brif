@@ -15,6 +15,7 @@ const nextConfig = {
     ],
   },
   experimental: {
+    serverComponentsExternalPackages: ['@prisma/client', '.prisma/client'],
     serverActions: {
       allowedOrigins: ['localhost:3001', '127.0.0.1:3001', '127.0.0.1:*', 'localhost:*'],
     },
