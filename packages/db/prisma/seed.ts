@@ -11,7 +11,7 @@ async function main() {
     update: { passwordHash },
     create: {
       email: 'gerente@agenciademo.com.br',
-      name: 'Marina Silva',
+      name: 'Gabriel Queiroz',
       passwordHash,
       role: UserRole.MANAGER,
     },
