@@ -2,50 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ------------------------------------------------------------------
+   BRIF — Design Tokens
+   Mapeia a paleta do wireframe para tokens semânticos (shadcn-style).
+   Cores-alvo: navy (dark ui), teal (primary), amber/red/blue (tags),
+   surf/white (light surface), ink (text).
+   ------------------------------------------------------------------ */
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* shadcn semantic tokens — light mode (único modo no MVP) */
+    --background: 210 40% 98%;       /* #F8FAFC surf */
+    --foreground: 219 30% 14%;       /* #1A2130 ink */
+    --card: 0 0% 100%;               /* #FFFFFF */
+    --card-foreground: 219 30% 14%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
-  }
+    --popover-foreground: 219 30% 14%;
+    --primary: 163 85% 34%;          /* #0D9E78 teal */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 214 32% 96%;        /* #F1F5F9 surf2 */
+    --secondary-foreground: 219 30% 14%;
+    --muted: 214 32% 96%;
+    --muted-foreground: 214 14% 49%; /* #6B7A8D */
+    --accent: 159 53% 94%;           /* #E6F7F2 teal-l */
+    --accent-foreground: 163 85% 26%;/* #0A7D60 teal-d */
+    --destructive: 354 70% 54%;      /* #DC3545 */
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;           /* #E2E8F0 */
+    --input: 214 32% 91%;
+    --ring: 163 85% 34%;
+    --radius: 0.625rem;
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    /* BRIF brand tokens (direto, hex) */
+    --brif-navy: #0B1829;
+    --brif-navy-2: #152238;
+    --brif-navy-3: #1E3251;
+    --brif-teal: #0D9E78;
+    --brif-teal-d: #0A7D60;
+    --brif-teal-l: #E6F7F2;
+    --brif-amber: #E09B2A;
+    --brif-amber-l: #FEF6E4;
+    --brif-red: #DC3545;
+    --brif-red-l: #FDECEA;
+    --brif-blue: #2D7DD2;
+    --brif-blue-l: #EBF3FC;
+    --brif-ink: #1A2130;
+    --brif-muted: #6B7A8D;
+    --brif-border: #E2E8F0;
+    --brif-border-2: #CBD5E0;
+    --brif-surf: #F8FAFC;
+    --brif-surf-2: #F1F5F9;
   }
 }
 
@@ -55,6 +60,15 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-outfit), system-ui, sans-serif;
     font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-syne), var(--font-outfit), sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  code, kbd, pre, samp {
+    font-family: var(--font-jetbrains), ui-monospace, monospace;
   }
 }

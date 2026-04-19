@@ -7,11 +7,13 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  Tag,
 } from '@brif/ui';
-import { Nav } from '@/components/nav';
 import { authOptions } from '@/lib/auth';
 import { getMeeting } from '@/lib/actions/meetings';
 import { TranscriptionEditor } from './editor';
+import { FlowSteps, computeFlowSteps } from '@/components/flow-steps';
+import { AudioPlayer } from '@/components/audio-player';
 
 export default async function ReuniaoPage({
   params,
@@ -24,82 +26,112 @@ export default async function ReuniaoPage({
   const meeting = await getMeeting(params.meetingId);
   if (!meeting || meeting.projectId !== params.id) notFound();
 
-  return (
-    <div className="min-h-screen">
-      <Nav />
-      <main className="container max-w-4xl py-8">
-        <div className="mb-6">
-          <Link
-            href={`/projetos/${params.id}`}
-            className="text-sm text-muted-foreground hover:text-foreground"
-          >
-            ← Voltar para {meeting.project.name}
-          </Link>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight">
-            Reunião de briefing
-          </h1>
-          <p className="text-muted-foreground">
-            {meeting.audioFileName} · {meeting.project.clientName}
-          </p>
-        </div>
+  const flowSteps = computeFlowSteps({
+    transcriptionStatus: meeting.transcriptionStatus,
+    briefingStatus: meeting.briefing?.status,
+    approvalDecision: null,
+  });
 
-        <Card className="mb-6">
+  const transcriptionTag = (() => {
+    switch (meeting.transcriptionStatus) {
+      case 'COMPLETED':
+        return { variant: 'teal' as const, label: 'Transcrito' };
+      case 'PROCESSING':
+        return { variant: 'amber' as const, label: 'Transcrevendo…' };
+      case 'FAILED':
+        return { variant: 'red' as const, label: 'Falhou' };
+      default:
+        return { variant: 'gray' as const, label: 'Aguardando' };
+    }
+  })();
+
+  return (
+    <div className="mx-auto max-w-[1400px] p-6">
+      {/* Cabeçalho */}
+      <div className="mb-4">
+        <Link
+          href={`/projetos/${params.id}`}
+          className="text-xs text-brif-muted hover:text-brif-ink"
+        >
+          ← Voltar para {meeting.project.name}
+        </Link>
+        <div className="mt-1.5 flex items-start justify-between gap-4">
+          <div>
+            <h1 className="font-display text-2xl font-bold tracking-tight">
+              Reunião de briefing
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              {meeting.audioFileName} · {meeting.project.clientName}
+            </p>
+          </div>
+          <Tag variant={transcriptionTag.variant}>{transcriptionTag.label}</Tag>
+        </div>
+      </div>
+
+      {/* Flow steps */}
+      <div className="mb-5">
+        <FlowSteps steps={flowSteps} />
+      </div>
+
+      {/* Player de áudio */}
+      <Card className="mb-5">
+        <CardHeader className="flex-row items-center gap-2 space-y-0">
+          <CardTitle>Gravação da reunião</CardTitle>
+          <Tag variant={transcriptionTag.variant}>{transcriptionTag.label}</Tag>
+        </CardHeader>
+        <CardContent>
+          <AudioPlayer src={meeting.audioUrl} fileName={meeting.audioFileName} />
+        </CardContent>
+      </Card>
+
+      {/* Transcrição */}
+      {meeting.transcriptionStatus === 'FAILED' && (
+        <Card className="border-brif-red/30">
           <CardHeader>
-            <CardTitle>Áudio original</CardTitle>
+            <CardTitle>Transcrição falhou</CardTitle>
+            <CardDescription>
+              Ocorreu um erro ao processar o áudio.
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <audio controls src={meeting.audioUrl} className="w-full">
-              Seu navegador não suporta áudio HTML5.
-            </audio>
+            <p className="text-sm text-brif-red">
+              {meeting.transcriptionError ?? 'Erro desconhecido'}
+            </p>
           </CardContent>
         </Card>
+      )}
 
-        {meeting.transcriptionStatus === 'FAILED' && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Transcrição falhou</CardTitle>
-              <CardDescription>
-                Ocorreu um erro ao processar o áudio.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-destructive">
-                {meeting.transcriptionError ?? 'Erro desconhecido'}
-              </p>
-            </CardContent>
-          </Card>
-        )}
+      {meeting.transcriptionStatus === 'PROCESSING' && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Transcrevendo…</CardTitle>
+            <CardDescription>
+              Isso pode levar alguns segundos. Atualize a página se demorar.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      )}
 
-        {meeting.transcriptionStatus === 'PROCESSING' && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Transcrevendo…</CardTitle>
-              <CardDescription>
-                Isso pode levar alguns segundos. Atualize a página se demorar.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        )}
-
-        {meeting.transcriptionStatus === 'COMPLETED' && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Transcrição</CardTitle>
-              <CardDescription>
-                Revise e edite o texto antes de gerar o briefing com IA.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <TranscriptionEditor
-                projectId={params.id}
-                meetingId={meeting.id}
-                initialText={meeting.transcriptionEdited ?? meeting.transcriptionRaw ?? ''}
-                hasBriefing={Boolean(meeting.briefing)}
-              />
-            </CardContent>
-          </Card>
-        )}
-      </main>
+      {meeting.transcriptionStatus === 'COMPLETED' && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Transcrição</CardTitle>
+            <CardDescription>
+              Revise e edite o texto antes de gerar o briefing com IA.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <TranscriptionEditor
+              projectId={params.id}
+              meetingId={meeting.id}
+              initialText={
+                meeting.transcriptionEdited ?? meeting.transcriptionRaw ?? ''
+              }
+              hasBriefing={Boolean(meeting.briefing)}
+            />
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

@@ -7,14 +7,14 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@brif/ui', '@brif/db'],
-  outputFileTracingRoot: path.join(__dirname, '../../'),
-  outputFileTracingIncludes: {
-    '/**/*': [
-      '../../node_modules/.pnpm/@prisma+client@*/node_modules/.prisma/client/**/*',
-      '../../node_modules/.pnpm/@prisma+client@*/node_modules/@prisma/client/**/*',
-    ],
-  },
   experimental: {
+    outputFileTracingRoot: path.join(__dirname, '../../'),
+    outputFileTracingIncludes: {
+      '/**/*': [
+        '../../node_modules/.pnpm/@prisma+client@*/node_modules/.prisma/client/**/*',
+        '../../node_modules/.pnpm/@prisma+client@*/node_modules/@prisma/client/**/*',
+      ],
+    },
     serverComponentsExternalPackages: ['@prisma/client', '.prisma/client'],
     serverActions: {
       bodySizeLimit: '100mb', // para upload de áudio

@@ -4,3 +4,4 @@ export { Input } from './components/input';
 export { Label } from './components/label';
 export { Textarea } from './components/textarea';
 export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/card';
+export { Tag, tagVariants } from './components/tag';
