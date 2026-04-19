@@ -1,5 +1,6 @@
 'use server';
 
+import crypto from 'node:crypto';
 import { revalidatePath } from 'next/cache';
 import { getServerSession } from 'next-auth';
 import { z } from 'zod';
@@ -182,6 +183,78 @@ export async function saveBriefing(
   return { success: true };
 }
 
+const PORTAL_URL = process.env.NEXT_PUBLIC_PORTAL_URL ?? 'http://localhost:3001';
+const APPROVAL_TTL_DAYS = 30;
+
+export async function sendBriefingForApproval(
+  briefingId: string,
+): Promise<{ success: true; url: string } | { success: false; error: string }> {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) return { success: false, error: 'Não autenticado' };
+
+  const briefing = await prisma.briefing.findFirst({
+    where: {
+      id: briefingId,
+      meeting: { project: { managerId: session.user.id } },
+    },
+    include: {
+      approval: true,
+      meeting: { select: { projectId: true, id: true } },
+    },
+  });
+  if (!briefing) return { success: false, error: 'Briefing não encontrado' };
+
+  // Se já existe aprovação ainda válida, reaproveita o token
+  if (briefing.approval && briefing.approval.tokenExpiresAt > new Date()) {
+    return {
+      success: true,
+      url: `${PORTAL_URL}/briefing/${briefing.approval.magicToken}`,
+    };
+  }
+
+  const magicToken = crypto.randomBytes(32).toString('base64url');
+  const tokenExpiresAt = new Date(
+    Date.now() + APPROVAL_TTL_DAYS * 24 * 60 * 60 * 1000,
+  );
+
+  await prisma.$transaction([
+    prisma.approval.upsert({
+      where: { briefingId },
+      create: {
+        briefingId,
+        magicToken,
+        tokenExpiresAt,
+      },
+      update: {
+        magicToken,
+        tokenExpiresAt,
+        sentAt: new Date(),
+        viewedAt: null,
+        decidedAt: null,
+        decision: null,
+        clientComment: null,
+      },
+    }),
+    prisma.briefing.update({
+      where: { id: briefingId },
+      data: { status: 'SENT' },
+    }),
+    prisma.project.update({
+      where: { id: briefing.meeting.projectId },
+      data: { status: 'BRIEFING_SENT' },
+    }),
+  ]);
+
+  revalidatePath(
+    `/projetos/${briefing.meeting.projectId}/reuniao/${briefing.meeting.id}/briefing`,
+  );
+
+  return {
+    success: true,
+    url: `${PORTAL_URL}/briefing/${magicToken}`,
+  };
+}
+
 export async function getBriefingByMeeting(meetingId: string) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) throw new Error('Não autenticado');
@@ -192,6 +265,7 @@ export async function getBriefingByMeeting(meetingId: string) {
       meeting: { project: { managerId: session.user.id } },
     },
     include: {
+      approval: true,
       meeting: {
         include: {
           project: { select: { id: true, name: true, clientName: true } },

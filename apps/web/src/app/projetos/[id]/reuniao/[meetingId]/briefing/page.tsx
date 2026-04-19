@@ -13,6 +13,8 @@ import { authOptions } from '@/lib/auth';
 import { getBriefingByMeeting } from '@/lib/actions/briefings';
 import { BriefingEditor } from './editor';
 
+const PORTAL_URL = process.env.NEXT_PUBLIC_PORTAL_URL ?? 'http://localhost:3001';
+
 export default async function BriefingPage({
   params,
 }: {
@@ -52,6 +54,40 @@ export default async function BriefingPage({
           </div>
         </div>
 
+        {briefing.approval?.decidedAt && briefing.approval.decision === 'APPROVED' && (
+          <Card className="mb-6 border-green-500/50 bg-green-500/5">
+            <CardHeader>
+              <CardTitle>✓ Aprovado pelo cliente</CardTitle>
+              <CardDescription>
+                Decidido em{' '}
+                {new Date(briefing.approval.decidedAt).toLocaleString('pt-BR')}
+                {briefing.approval.clientComment && (
+                  <> · Comentário: “{briefing.approval.clientComment}”</>
+                )}
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        )}
+
+        {briefing.approval?.decidedAt && briefing.approval.decision === 'REJECTED' && (
+          <Card className="mb-6 border-amber-500/50 bg-amber-500/5">
+            <CardHeader>
+              <CardTitle>Cliente solicitou ajustes</CardTitle>
+              <CardDescription>
+                Decidido em{' '}
+                {new Date(briefing.approval.decidedAt).toLocaleString('pt-BR')}
+              </CardDescription>
+            </CardHeader>
+            {briefing.approval.clientComment && (
+              <CardContent>
+                <p className="whitespace-pre-wrap text-sm">
+                  {briefing.approval.clientComment}
+                </p>
+              </CardContent>
+            )}
+          </Card>
+        )}
+
         <Card>
           <CardHeader>
             <CardTitle>Campos do briefing</CardTitle>
@@ -73,6 +109,12 @@ export default async function BriefingPage({
                 orcamento: briefing.orcamento,
                 observacoes: briefing.observacoes ?? '',
               }}
+              approvalUrl={
+                briefing.approval && briefing.approval.tokenExpiresAt > new Date()
+                  ? `${PORTAL_URL}/briefing/${briefing.approval.magicToken}`
+                  : null
+              }
+              readOnly={briefing.status === 'APPROVED'}
             />
           </CardContent>
         </Card>

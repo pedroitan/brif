@@ -15,7 +15,8 @@
     "@brif/ui": "workspace:*",
     "next": "14.2.15",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@brif/config": "workspace:*",

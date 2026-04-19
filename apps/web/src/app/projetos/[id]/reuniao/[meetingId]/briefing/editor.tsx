@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import { Button, Label, Textarea } from '@brif/ui';
-import { saveBriefing } from '@/lib/actions/briefings';
+import { saveBriefing, sendBriefingForApproval } from '@/lib/actions/briefings';
 
 type BriefingFields = {
   objetivo: string;
@@ -67,14 +67,40 @@ const FIELDS: Array<{
 export function BriefingEditor({
   briefingId,
   initial,
+  approvalUrl: initialApprovalUrl,
+  readOnly = false,
 }: {
   briefingId: string;
   initial: BriefingFields;
+  approvalUrl: string | null;
+  readOnly?: boolean;
 }) {
   const [values, setValues] = useState<BriefingFields>(initial);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [approvalUrl, setApprovalUrl] = useState<string | null>(initialApprovalUrl);
+  const [copied, setCopied] = useState(false);
   const [pending, startTransition] = useTransition();
+  const [sending, startSending] = useTransition();
+
+  function handleSend() {
+    setError(null);
+    startSending(async () => {
+      const result = await sendBriefingForApproval(briefingId);
+      if (!result.success) {
+        setError(result.error);
+        return;
+      }
+      setApprovalUrl(result.url);
+    });
+  }
+
+  async function handleCopy() {
+    if (!approvalUrl) return;
+    await navigator.clipboard.writeText(approvalUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
 
   function update<K extends keyof BriefingFields>(key: K, value: string) {
     setValues((prev) => ({ ...prev, [key]: value }));
@@ -125,14 +151,52 @@ export function BriefingEditor({
       ))}
 
       <div className="flex flex-wrap items-center gap-3 border-t pt-4">
-        <Button onClick={handleSave} disabled={pending || !dirty}>
+        <Button
+          onClick={handleSave}
+          disabled={readOnly || pending || sending || !dirty}
+          variant="outline"
+        >
           {pending ? 'Salvando…' : 'Salvar alterações'}
         </Button>
-        <Button variant="outline" disabled>
-          Enviar para aprovação (Sprint 5)
+        <Button onClick={handleSend} disabled={readOnly || sending || pending || dirty}>
+          {sending
+            ? 'Gerando link…'
+            : approvalUrl
+              ? 'Regenerar link de aprovação'
+              : 'Enviar para aprovação'}
         </Button>
         {saved && <span className="text-sm text-muted-foreground">Salvo ✓</span>}
+        {dirty && !pending && (
+          <span className="text-xs text-muted-foreground">
+            Salve antes de enviar.
+          </span>
+        )}
       </div>
+
+      {approvalUrl && (
+        <div className="rounded-lg border bg-accent/20 p-4 space-y-2">
+          <p className="text-sm font-semibold">Link de aprovação do cliente</p>
+          <p className="text-xs text-muted-foreground">
+            Envie este link para o cliente aprovar ou solicitar ajustes. Válido por 30 dias.
+          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <code className="flex-1 min-w-[240px] rounded bg-background px-2 py-1 text-xs break-all">
+              {approvalUrl}
+            </code>
+            <Button size="sm" variant="outline" onClick={handleCopy}>
+              {copied ? 'Copiado ✓' : 'Copiar'}
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => window.open(approvalUrl, '_blank')}
+            >
+              Abrir ↗
+            </Button>
+          </div>
+        </div>
+      )}
+
       {error && (
         <p className="text-sm text-destructive" role="alert">
           {error}
