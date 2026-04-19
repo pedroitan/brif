@@ -4,8 +4,7 @@ import { AppTopbar } from './app-topbar';
 
 type AppShellProps = {
   projects: SidebarProject[];
-  activeProject?: SidebarProject | null;
-  pathname: string;
+  activeProject: SidebarProject | null;
   user: { name?: string | null; email?: string | null; role?: string | null };
   children: React.ReactNode;
 };
@@ -15,7 +14,7 @@ type AppShellProps = {
  * Inclui: tab-bar navy (brand BRIF) + sidebar + topbar + conteúdo.
  * Toda a área /projetos/* é envolvida por este shell.
  */
-export function AppShell({ projects, activeProject, pathname, user, children }: AppShellProps) {
+export function AppShell({ projects, activeProject, user, children }: AppShellProps) {
   return (
     <div className="flex h-screen flex-col bg-brif-surf">
       {/* Tab bar superior (brand + logout) */}
@@ -37,7 +36,6 @@ export function AppShell({ projects, activeProject, pathname, user, children }: 
         <AppSidebar
           projects={projects}
           activeProject={activeProject ?? null}
-          pathname={pathname}
           user={user}
         />
         <div className="flex flex-1 flex-col overflow-hidden">

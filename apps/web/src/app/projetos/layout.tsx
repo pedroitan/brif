@@ -47,7 +47,6 @@ export default async function ProjetosLayout({
     <AppShell
       projects={sidebarProjects}
       activeProject={sidebarActive}
-      pathname={pathname}
       user={{
         name: session.user.name,
         email: session.user.email,

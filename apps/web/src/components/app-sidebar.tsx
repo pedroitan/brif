@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { cn } from '@brif/ui';
 import { SidebarSignOut } from './app-sidebar-signout';
 
@@ -12,7 +15,6 @@ export type SidebarProject = {
 type AppSidebarProps = {
   projects: SidebarProject[];
   activeProject: SidebarProject | null;
-  pathname: string;
   user: { name?: string | null; email?: string | null; role?: string | null };
 };
 
@@ -42,7 +44,8 @@ function initials(name?: string | null): string {
     .toUpperCase();
 }
 
-export function AppSidebar({ projects, activeProject, pathname, user }: AppSidebarProps) {
+export function AppSidebar({ projects, activeProject, user }: AppSidebarProps) {
+  const pathname = usePathname();
   return (
     <aside className="flex w-[220px] min-w-[220px] flex-col overflow-y-auto border-r border-white/5 bg-brif-navy-2">
       {/* Card do projeto ativo */}
