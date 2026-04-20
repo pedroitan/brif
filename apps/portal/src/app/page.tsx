@@ -14,9 +14,9 @@ export default function PortalHome() {
         clientInitials="AL"
       />
 
-      <div className="max-w-3xl mx-auto px-6 py-8 space-y-6">
+      <div className="mx-auto max-w-3xl px-4 py-6 space-y-6 md:px-6 md:py-8">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900">Olá, Ana!</h1>
+          <h1 className="text-xl font-semibold text-gray-900 md:text-2xl">Olá, Ana!</h1>
           <p className="text-sm text-gray-600">
             Aqui está o status atualizado do seu projeto. Uma ação aguarda sua revisão.
           </p>
@@ -53,7 +53,7 @@ export default function PortalHome() {
           ]}
         />
 
-        <div className="rounded-lg border border-gray-200 bg-white p-5">
+        <div className="rounded-lg border border-gray-200 bg-white p-4 md:p-5">
           <div className="mb-4 text-sm font-semibold text-gray-900">Histórico do Projeto</div>
           <Timeline
             items={[

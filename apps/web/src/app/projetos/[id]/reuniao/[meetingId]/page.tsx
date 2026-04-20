@@ -46,7 +46,7 @@ export default async function ReuniaoPage({
   })();
 
   return (
-    <div className="mx-auto max-w-[1400px] p-6">
+    <div className="mx-auto max-w-[1400px] p-4 md:p-6">
       {/* Cabeçalho */}
       <div className="mb-4">
         <Link
@@ -55,21 +55,23 @@ export default async function ReuniaoPage({
         >
           ← Voltar para {meeting.project.name}
         </Link>
-        <div className="mt-1.5 flex items-start justify-between gap-4">
+        <div className="mt-1.5 flex flex-col gap-3 md:flex-row md:items-start md:justify-between md:gap-4">
           <div>
-            <h1 className="font-display text-2xl font-bold tracking-tight">
+            <h1 className="font-display text-xl font-bold tracking-tight md:text-2xl">
               Reunião de briefing
             </h1>
             <p className="text-sm text-muted-foreground">
               {meeting.audioFileName} · {meeting.project.clientName}
             </p>
           </div>
-          <Tag variant={transcriptionTag.variant}>{transcriptionTag.label}</Tag>
+          <div className="self-start">
+            <Tag variant={transcriptionTag.variant}>{transcriptionTag.label}</Tag>
+          </div>
         </div>
       </div>
 
       {/* Flow steps */}
-      <div className="mb-5">
+      <div className="mb-5 -mx-4 overflow-x-auto px-4 md:mx-0 md:px-0">
         <FlowSteps steps={flowSteps} />
       </div>
 

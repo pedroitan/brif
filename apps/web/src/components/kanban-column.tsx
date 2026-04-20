@@ -46,7 +46,7 @@ export function KanbanColumn({
     <div
       onDragOver={handleDragOver}
       onDrop={handleDrop}
-      className="flex min-w-[280px] max-w-[320px] flex-1 flex-col gap-3"
+      className="flex w-[85vw] max-w-[320px] flex-shrink-0 flex-col gap-3 snap-start sm:w-[280px] md:min-w-[280px]"
     >
       <div className="flex items-center gap-2">
         <div className="h-2 w-2 rounded-full" style={{ backgroundColor: color }} />
@@ -67,7 +67,7 @@ export function KanbanColumn({
       {onAddTask && (
         <button
           onClick={onAddTask}
-          className="rounded-lg border border-dashed border-gray-300 px-4 py-2 text-sm text-gray-600 hover:border-gray-400 hover:bg-gray-50"
+          className="min-h-[44px] rounded-lg border border-dashed border-gray-300 px-4 py-3 text-sm text-gray-600 hover:border-gray-400 hover:bg-gray-50"
         >
           + Adicionar tarefa
         </button>

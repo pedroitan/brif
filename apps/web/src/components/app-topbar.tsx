@@ -1,11 +1,13 @@
-import { headers } from 'next/headers';
+'use client';
+
+import { usePathname } from 'next/navigation';
 
 /**
  * Topbar com breadcrumbs dinâmicas baseadas no pathname.
- * Pathname vem do header `x-pathname` injetado pelo middleware.
+ * Usa usePathname para obter o pathname atual no cliente.
  */
 export function AppTopbar() {
-  const pathname = headers().get('x-pathname') ?? '/projetos';
+  const pathname = usePathname();
   const crumbs = buildCrumbs(pathname);
 
   return (

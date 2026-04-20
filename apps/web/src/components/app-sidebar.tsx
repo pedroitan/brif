@@ -15,6 +15,8 @@ export type SidebarProject = {
 type AppSidebarProps = {
   projects: SidebarProject[];
   user: { name?: string | null; email?: string | null; role?: string | null };
+  isOpen?: boolean;
+  onClose?: () => void;
 };
 
 function isActive(pathname: string, href: string, exact = false): boolean {
@@ -43,7 +45,7 @@ function initials(name?: string | null): string {
     .toUpperCase();
 }
 
-export function AppSidebar({ projects, user }: AppSidebarProps) {
+export function AppSidebar({ projects, user, isOpen, onClose }: AppSidebarProps) {
   const pathname = usePathname();
   
   // Derive active project from pathname
@@ -53,130 +55,291 @@ export function AppSidebar({ projects, user }: AppSidebarProps) {
     if (!id || id === 'novo') return null;
     return projects.find((p) => p.id === id) ?? null;
   })();
+
+  const handleLinkClick = () => {
+    if (onClose) onClose();
+  };
+
   return (
-    <aside className="flex w-[220px] min-w-[220px] flex-col overflow-y-auto border-r border-neutral-200 bg-white">
-      {/* Card do projeto ativo */}
-      {activeProject ? (
-        <div className="p-3.5 pt-3.5">
-          <div className="rounded-lg bg-neutral-100 px-2.5 py-2.5">
-            <div className="mb-1 font-mono text-[9px] uppercase tracking-wider text-neutral-500">
-              Projeto ativo
+    <>
+      {/* Mobile drawer */}
+      <aside
+        className={cn(
+          'fixed inset-y-0 left-0 z-50 w-[280px] transform border-r border-neutral-200 bg-white transition-transform duration-300 md:hidden',
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        )}
+      >
+        <div className="flex h-full flex-col overflow-y-auto">
+          {/* Close button for mobile */}
+          <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
+            <span className="font-semibold text-neutral-900">Menu</span>
+            <button
+              onClick={onClose}
+              className="rounded p-1 text-neutral-500 hover:bg-neutral-100"
+              aria-label="Close menu"
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M15 5L5 15M5 5l10 10" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </div>
+          
+          {/* Card do projeto ativo */}
+          {activeProject ? (
+            <div className="p-3.5 pt-3.5">
+              <div className="rounded-lg bg-neutral-100 px-2.5 py-2.5">
+                <div className="mb-1 font-mono text-[9px] uppercase tracking-wider text-neutral-500">
+                  Projeto ativo
+                </div>
+                <div className="text-[12.5px] font-semibold leading-snug text-neutral-900">
+                  {activeProject.name}
+                </div>
+                <div className="mt-1 text-[11px] text-neutral-600">
+                  ● Fase: {phaseLabel(activeProject.status)}
+                </div>
+              </div>
             </div>
-            <div className="text-[12.5px] font-semibold leading-snug text-neutral-900">
-              {activeProject.name}
+          ) : (
+            <div className="px-3.5 py-4">
+              <div className="font-mono text-[9px] uppercase tracking-wider text-neutral-500">
+                Nenhum projeto selecionado
+              </div>
             </div>
-            <div className="mt-1 text-[11px] text-neutral-600">
-              ● Fase: {phaseLabel(activeProject.status)}
+          )}
+
+          {/* Menu principal (apenas quando dentro de um projeto) */}
+          {activeProject ? (
+            <>
+              <div className="px-3.5 pb-1.5 pt-4 font-mono text-[9px] font-medium uppercase tracking-wider text-neutral-500">
+                Menu
+              </div>
+              <SidebarLink
+                href={`/projetos/${activeProject.id}`}
+                icon="briefing"
+                active={
+                  isActive(pathname, `/projetos/${activeProject.id}`, true) ||
+                  pathname.startsWith(`/projetos/${activeProject.id}/reuniao`)
+                }
+                onClick={handleLinkClick}
+              >
+                Briefing
+              </SidebarLink>
+              <SidebarLink
+                href={`/projetos/${activeProject.id}/tarefas`}
+                icon="tasks"
+                active={isActive(pathname, `/projetos/${activeProject.id}/tarefas`)}
+                onClick={handleLinkClick}
+              >
+                Tarefas
+              </SidebarLink>
+              <SidebarLink
+                href={`/projetos/${activeProject.id}/calendario`}
+                icon="calendar"
+                active={isActive(
+                  pathname,
+                  `/projetos/${activeProject.id}/calendario`,
+                )}
+                onClick={handleLinkClick}
+              >
+                Calendário
+              </SidebarLink>
+              <SidebarLink
+                href={`/projetos/${activeProject.id}/proposta`}
+                icon="proposal"
+                active={isActive(
+                  pathname,
+                  `/projetos/${activeProject.id}/proposta`,
+                )}
+                onClick={handleLinkClick}
+              >
+                Proposta
+              </SidebarLink>
+              <SidebarLink
+                href={`/projetos/${activeProject.id}/documentos`}
+                icon="docs"
+                active={isActive(
+                  pathname,
+                  `/projetos/${activeProject.id}/documentos`,
+                )}
+                onClick={handleLinkClick}
+              >
+                Documentos
+              </SidebarLink>
+            </>
+          ) : null}
+
+          {/* Lista de projetos */}
+          <div className="mt-2 px-3.5 pb-1.5 pt-2 font-mono text-[9px] font-medium uppercase tracking-wider text-neutral-500">
+            Projetos
+          </div>
+          {projects.length === 0 ? (
+            <div className="px-3.5 text-xs text-neutral-400">Nenhum ainda.</div>
+          ) : (
+            projects.map((p) => (
+              <SidebarLink
+                key={p.id}
+                href={`/projetos/${p.id}`}
+                icon="project"
+                active={p.id === activeProject?.id}
+                onClick={handleLinkClick}
+              >
+                {p.name}
+              </SidebarLink>
+            ))
+          )}
+          <div className="px-3.5 pb-3 pt-3">
+            <Link
+              href="/projetos/novo"
+              onClick={handleLinkClick}
+              className="block rounded-md border border-dashed border-neutral-300 px-2.5 py-1.5 text-center text-[11px] text-neutral-500 hover:border-neutral-400 hover:text-neutral-700"
+            >
+              + Novo projeto
+            </Link>
+          </div>
+
+          {/* Avatar */}
+          <div className="mt-auto flex items-center gap-2.5 border-t border-neutral-200 px-3.5 py-3.5">
+            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-neutral-900 text-[11px] font-semibold text-white">
+              {initials(user.name || user.email)}
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="truncate text-[12.5px] font-medium text-neutral-900">
+                {user.name ?? 'Usuário'}
+              </div>
+              <div className="truncate text-[10.5px] text-neutral-500">
+                {user.role ?? user.email}
+              </div>
+            </div>
+            <SidebarSignOut />
+          </div>
+        </div>
+      </aside>
+
+      {/* Desktop sidebar */}
+      <aside className="hidden w-[220px] min-w-[220px] flex-col overflow-y-auto border-r border-neutral-200 bg-white md:flex">
+        {/* Card do projeto ativo */}
+        {activeProject ? (
+          <div className="p-3.5 pt-3.5">
+            <div className="rounded-lg bg-neutral-100 px-2.5 py-2.5">
+              <div className="mb-1 font-mono text-[9px] uppercase tracking-wider text-neutral-500">
+                Projeto ativo
+              </div>
+              <div className="text-[12.5px] font-semibold leading-snug text-neutral-900">
+                {activeProject.name}
+              </div>
+              <div className="mt-1 text-[11px] text-neutral-600">
+                ● Fase: {phaseLabel(activeProject.status)}
+              </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <div className="px-3.5 py-4">
-          <div className="font-mono text-[9px] uppercase tracking-wider text-neutral-500">
-            Nenhum projeto selecionado
+        ) : (
+          <div className="px-3.5 py-4">
+            <div className="font-mono text-[9px] uppercase tracking-wider text-neutral-500">
+              Nenhum projeto selecionado
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Menu principal (apenas quando dentro de um projeto) */}
-      {activeProject ? (
-        <>
-          <div className="px-3.5 pb-1.5 pt-4 font-mono text-[9px] font-medium uppercase tracking-wider text-neutral-500">
-            Menu
-          </div>
-          <SidebarLink
-            href={`/projetos/${activeProject.id}`}
-            icon="briefing"
-            active={
-              isActive(pathname, `/projetos/${activeProject.id}`, true) ||
-              pathname.startsWith(`/projetos/${activeProject.id}/reuniao`)
-            }
-          >
-            Briefing
-          </SidebarLink>
-          <SidebarLink
-            href={`/projetos/${activeProject.id}/tarefas`}
-            icon="tasks"
-            active={isActive(pathname, `/projetos/${activeProject.id}/tarefas`)}
-          >
-            Tarefas
-          </SidebarLink>
-          <SidebarLink
-            href={`/projetos/${activeProject.id}/calendario`}
-            icon="calendar"
-            active={isActive(
-              pathname,
-              `/projetos/${activeProject.id}/calendario`,
-            )}
-          >
-            Calendário
-          </SidebarLink>
-          <SidebarLink
-            href={`/projetos/${activeProject.id}/proposta`}
-            icon="proposal"
-            active={isActive(
-              pathname,
-              `/projetos/${activeProject.id}/proposta`,
-            )}
-          >
-            Proposta
-          </SidebarLink>
-          <SidebarLink
-            href={`/projetos/${activeProject.id}/documentos`}
-            icon="docs"
-            active={isActive(
-              pathname,
-              `/projetos/${activeProject.id}/documentos`,
-            )}
-          >
-            Documentos
-          </SidebarLink>
-        </>
-      ) : null}
+        {/* Menu principal (apenas quando dentro de um projeto) */}
+        {activeProject ? (
+          <>
+            <div className="px-3.5 pb-1.5 pt-4 font-mono text-[9px] font-medium uppercase tracking-wider text-neutral-500">
+              Menu
+            </div>
+            <SidebarLink
+              href={`/projetos/${activeProject.id}`}
+              icon="briefing"
+              active={
+                isActive(pathname, `/projetos/${activeProject.id}`, true) ||
+                pathname.startsWith(`/projetos/${activeProject.id}/reuniao`)
+              }
+            >
+              Briefing
+            </SidebarLink>
+            <SidebarLink
+              href={`/projetos/${activeProject.id}/tarefas`}
+              icon="tasks"
+              active={isActive(pathname, `/projetos/${activeProject.id}/tarefas`)}
+            >
+              Tarefas
+            </SidebarLink>
+            <SidebarLink
+              href={`/projetos/${activeProject.id}/calendario`}
+              icon="calendar"
+              active={isActive(
+                pathname,
+                `/projetos/${activeProject.id}/calendario`,
+              )}
+            >
+              Calendário
+            </SidebarLink>
+            <SidebarLink
+              href={`/projetos/${activeProject.id}/proposta`}
+              icon="proposal"
+              active={isActive(
+                pathname,
+                `/projetos/${activeProject.id}/proposta`,
+              )}
+            >
+              Proposta
+            </SidebarLink>
+            <SidebarLink
+              href={`/projetos/${activeProject.id}/documentos`}
+              icon="docs"
+              active={isActive(
+                pathname,
+                `/projetos/${activeProject.id}/documentos`,
+              )}
+            >
+              Documentos
+            </SidebarLink>
+          </>
+        ) : null}
 
-      {/* Lista de projetos */}
-      <div className="mt-2 px-3.5 pb-1.5 pt-2 font-mono text-[9px] font-medium uppercase tracking-wider text-neutral-500">
-        Projetos
-      </div>
-      {projects.length === 0 ? (
-        <div className="px-3.5 text-xs text-neutral-400">Nenhum ainda.</div>
-      ) : (
-        projects.map((p) => (
-          <SidebarLink
-            key={p.id}
-            href={`/projetos/${p.id}`}
-            icon="project"
-            active={p.id === activeProject?.id}
+        {/* Lista de projetos */}
+        <div className="mt-2 px-3.5 pb-1.5 pt-2 font-mono text-[9px] font-medium uppercase tracking-wider text-neutral-500">
+          Projetos
+        </div>
+        {projects.length === 0 ? (
+          <div className="px-3.5 text-xs text-neutral-400">Nenhum ainda.</div>
+        ) : (
+          projects.map((p) => (
+            <SidebarLink
+              key={p.id}
+              href={`/projetos/${p.id}`}
+              icon="project"
+              active={p.id === activeProject?.id}
+            >
+              {p.name}
+            </SidebarLink>
+          ))
+        )}
+        <div className="px-3.5 pb-3 pt-3">
+          <Link
+            href="/projetos/novo"
+            className="block rounded-md border border-dashed border-neutral-300 px-2.5 py-1.5 text-center text-[11px] text-neutral-500 hover:border-neutral-400 hover:text-neutral-700"
           >
-            {p.name}
-          </SidebarLink>
-        ))
-      )}
-      <div className="px-3.5 pb-3 pt-3">
-        <Link
-          href="/projetos/novo"
-          className="block rounded-md border border-dashed border-neutral-300 px-2.5 py-1.5 text-center text-[11px] text-neutral-500 hover:border-neutral-400 hover:text-neutral-700"
-        >
-          + Novo projeto
-        </Link>
-      </div>
+            + Novo projeto
+          </Link>
+        </div>
 
-      {/* Avatar */}
-      <div className="mt-auto flex items-center gap-2.5 border-t border-neutral-200 px-3.5 py-3.5">
-        <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-neutral-900 text-[11px] font-semibold text-white">
-          {initials(user.name || user.email)}
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="truncate text-[12.5px] font-medium text-neutral-900">
-            {user.name ?? 'Usuário'}
+        {/* Avatar */}
+        <div className="mt-auto flex items-center gap-2.5 border-t border-neutral-200 px-3.5 py-3.5">
+          <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-neutral-900 text-[11px] font-semibold text-white">
+            {initials(user.name || user.email)}
           </div>
-          <div className="truncate text-[10.5px] text-neutral-500">
-            {user.role ?? user.email}
+          <div className="min-w-0 flex-1">
+            <div className="truncate text-[12.5px] font-medium text-neutral-900">
+              {user.name ?? 'Usuário'}
+            </div>
+            <div className="truncate text-[10.5px] text-neutral-500">
+              {user.role ?? user.email}
+            </div>
           </div>
+          <SidebarSignOut />
         </div>
-        <SidebarSignOut />
-      </div>
-    </aside>
+      </aside>
+    </>
   );
 }
 
@@ -206,15 +369,18 @@ function SidebarLink({
   icon,
   active,
   children,
+  onClick,
 }: {
   href: string;
   icon: IconKind;
   active?: boolean;
   children: React.ReactNode;
+  onClick?: () => void;
 }) {
   return (
     <Link
       href={href}
+      onClick={onClick}
       className={cn(
         'flex items-center gap-2.5 border-l-2 border-transparent px-3.5 py-[7px] text-[13px] transition-colors',
         active

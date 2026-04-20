@@ -69,7 +69,7 @@ export function TaskCard({
       draggable
       onDragStart={() => onDragStart?.(id)}
       onClick={onClick}
-      className={`rounded-lg border bg-white p-4 shadow-sm transition-shadow hover:shadow-md ${
+      className={`min-h-[88px] cursor-pointer rounded-lg border bg-white p-4 shadow-sm transition-shadow hover:shadow-md md:min-h-0 ${
         isUrgent ? 'border-red-300' : 'border-gray-200'
       }`}
     >

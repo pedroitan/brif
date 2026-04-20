@@ -41,21 +41,23 @@ export default async function ProjetoDetalhePage({
   if (!project) notFound();
 
   return (
-    <div className="mx-auto max-w-4xl p-6">
-      <div className="mb-6 flex items-start justify-between">
+    <div className="mx-auto max-w-4xl p-4 md:p-6">
+      <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold tracking-tight">
+          <h1 className="font-display text-xl font-bold tracking-tight md:text-2xl">
             {project.name}
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="break-words text-sm text-muted-foreground">
             Cliente: {project.clientName} · {project.clientEmail}
           </p>
         </div>
-        <Tag
-          variant={project.status === 'BRIEFING_APPROVED' ? 'teal' : 'gray'}
-        >
-          {statusLabel[project.status] ?? project.status}
-        </Tag>
+        <div className="self-start">
+          <Tag
+            variant={project.status === 'BRIEFING_APPROVED' ? 'teal' : 'gray'}
+          >
+            {statusLabel[project.status] ?? project.status}
+          </Tag>
+        </div>
       </div>
 
       <Card>

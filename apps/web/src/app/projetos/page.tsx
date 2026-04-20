@@ -29,15 +29,15 @@ export default async function ProjetosPage() {
   const projects = await listProjects(session.user.id);
 
   return (
-    <div className="p-6">
-      <div className="mb-6 flex items-center justify-between">
+    <div className="p-4 md:p-6">
+      <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold tracking-tight">Projetos</h1>
+          <h1 className="font-display text-xl font-bold tracking-tight md:text-2xl">Projetos</h1>
           <p className="text-sm text-muted-foreground">
             Gerencie os briefings e entregas dos seus clientes.
           </p>
         </div>
-        <Link href="/projetos/novo">
+        <Link href="/projetos/novo" className="self-start md:self-auto">
           <Button>+ Novo projeto</Button>
         </Link>
       </div>
