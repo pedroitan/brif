@@ -20,7 +20,6 @@ const nextConfig = {
       '/**/*': [
         '../../node_modules/.pnpm/@prisma+client@*/node_modules/.prisma/client/**/*',
         '../../node_modules/.pnpm/@prisma+client@*/node_modules/@prisma/client/**/*',
-        '../../node_modules/.pnpm/@ffmpeg-installer+*/node_modules/@ffmpeg-installer/**/*',
       ],
     },
     serverComponentsExternalPackages: [
