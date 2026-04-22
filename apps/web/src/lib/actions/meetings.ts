@@ -3,31 +3,33 @@
 import { revalidatePath } from 'next/cache';
 import { getServerSession } from 'next-auth';
 import { put } from '@vercel/blob';
+import { toFile } from 'openai/uploads';
 import { prisma } from '@brif/db';
 import { authOptions } from '@/lib/auth';
+import { openai } from '@/lib/openai';
+import { normalizeAudioForWhisper } from '@/lib/audio-normalize';
 
-async function transcribeWithWhisper(audioFile: File): Promise<string> {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) throw new Error('OPENAI_API_KEY não configurada');
-
-  const body = new FormData();
-  body.append('file', audioFile);
-  body.append('model', 'whisper-1');
-  body.append('language', 'pt');
-  body.append('response_format', 'text');
-
-  const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${apiKey}` },
-    body,
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Whisper API ${response.status}: ${errorText}`);
+async function transcribeWithWhisper(
+  buffer: Buffer,
+  filename: string,
+  mime: string,
+): Promise<string> {
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error('OPENAI_API_KEY não configurada');
   }
 
-  return response.text();
+  const file = await toFile(buffer, filename, { type: mime });
+
+  const transcription = await openai.audio.transcriptions.create({
+    file,
+    model: 'whisper-1',
+    language: 'pt',
+    response_format: 'text',
+  });
+
+  return typeof transcription === 'string'
+    ? transcription
+    : (transcription as { text: string }).text;
 }
 
 export async function uploadAndTranscribe(formData: FormData) {
@@ -52,17 +54,32 @@ export async function uploadAndTranscribe(formData: FormData) {
     throw new Error('Projeto não encontrado');
   }
 
-  // 2. Upload para o Vercel Blob (server-side)
-  const blob = await put(audioFile.name, audioFile, {
+  // 2. Normaliza o áudio (detecta formato real por magic bytes, remuxa AAC cru se necessário)
+  const originalBuffer = Buffer.from(await audioFile.arrayBuffer());
+  let normalized;
+  try {
+    normalized = await normalizeAudioForWhisper(audioFile.name, originalBuffer);
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : 'Não foi possível processar o arquivo de áudio.';
+    return { meetingId: '', success: false as const, error: message };
+  }
+
+  const { buffer: normalizedBuffer, filename, mime } = normalized;
+
+  // 3. Upload para o Vercel Blob (server-side) usando o buffer normalizado
+  const uploaded = await put(filename, normalizedBuffer, {
     access: 'public',
     addRandomSuffix: true,
-    contentType: audioFile.type || 'audio/mpeg',
+    contentType: mime,
   });
 
-  const audioUrl = blob.url;
+  const audioUrl = uploaded.url;
   const audioFileName = audioFile.name;
 
-  // 3. Cria a reunião com status PROCESSING
+  // 4. Cria a reunião com status PROCESSING
   const meeting = await prisma.meeting.create({
     data: {
       projectId,
@@ -77,9 +94,9 @@ export async function uploadAndTranscribe(formData: FormData) {
     data: { status: 'BRIEFING_PENDING' },
   });
 
-  // 4. Envia direto ao Whisper (já temos o File em memória)
+  // 5. Envia ao Whisper
   try {
-    const transcription = await transcribeWithWhisper(audioFile);
+    const transcription = await transcribeWithWhisper(normalizedBuffer, filename, mime);
 
     await prisma.meeting.update({
       where: { id: meeting.id },

@@ -81,9 +81,19 @@ export function UploadAudio({ projectId }: { projectId: string }) {
       )}
 
       {error && (
-        <p className="text-sm text-destructive" role="alert">
-          {error}
-        </p>
+        <div
+          className="rounded-lg border border-destructive/30 bg-destructive/5 p-3"
+          role="alert"
+        >
+          <p className="text-sm font-medium text-destructive">
+            Não foi possível processar o áudio
+          </p>
+          <p className="mt-1 text-xs text-destructive/80">{error}</p>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Dica: se gravou no celular, tente exportar como MP3 ou enviar o
+            arquivo original do app.
+          </p>
+        </div>
       )}
 
       <p className="text-xs text-muted-foreground">

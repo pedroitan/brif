@@ -20,9 +20,15 @@ const nextConfig = {
       '/**/*': [
         '../../node_modules/.pnpm/@prisma+client@*/node_modules/.prisma/client/**/*',
         '../../node_modules/.pnpm/@prisma+client@*/node_modules/@prisma/client/**/*',
+        '../../node_modules/.pnpm/@ffmpeg-installer+*/node_modules/@ffmpeg-installer/**/*',
       ],
     },
-    serverComponentsExternalPackages: ['@prisma/client', '.prisma/client'],
+    serverComponentsExternalPackages: [
+      '@prisma/client',
+      '.prisma/client',
+      '@ffmpeg-installer/ffmpeg',
+      'fluent-ffmpeg',
+    ],
     serverActions: {
       bodySizeLimit: '100mb', // para upload de áudio
       allowedOrigins: ['localhost:3000', '127.0.0.1:3000', '127.0.0.1:*', 'localhost:*'],
