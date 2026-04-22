@@ -132,7 +132,7 @@ export default async function BriefingPage({
           <Card>
             <CardHeader className="flex-row items-center gap-2 space-y-0">
               <CardTitle>Briefing consolidado</CardTitle>
-              <Tag variant="amber">IA gerado</Tag>
+              <Tag variant="amber">Gerado por IA</Tag>
             </CardHeader>
             <CardContent>
               <BriefingEditor
@@ -154,12 +154,6 @@ export default async function BriefingPage({
                 }
                 readOnly={briefing.status === 'APPROVED'}
               />
-              {briefing.generationCost !== null && (
-                <div className="mt-3 font-mono text-[10px] text-brif-muted">
-                  Geração custou $
-                  {briefing.generationCost?.toFixed(4)} USD
-                </div>
-              )}
             </CardContent>
           </Card>
 

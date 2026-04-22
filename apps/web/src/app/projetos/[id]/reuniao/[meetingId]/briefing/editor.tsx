@@ -1,8 +1,41 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect, useRef } from 'react';
 import { Button, Label, Textarea } from '@brif/ui';
 import { saveBriefing, sendBriefingForApproval } from '@/lib/actions/briefings';
+
+function AutoTextarea({
+  value,
+  onChange,
+  id,
+  readOnly,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  id: string;
+  readOnly?: boolean;
+}) {
+  const ref = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = `${el.scrollHeight}px`;
+  }, [value]);
+
+  return (
+    <Textarea
+      ref={ref}
+      id={id}
+      value={value}
+      readOnly={readOnly}
+      onChange={(e) => onChange(e.target.value)}
+      className="min-h-[40px] resize-none overflow-hidden leading-relaxed"
+      rows={1}
+    />
+  );
+}
 
 type BriefingFields = {
   objetivo: string;
@@ -18,49 +51,41 @@ const FIELDS: Array<{
   key: keyof BriefingFields;
   label: string;
   description: string;
-  minHeight: number;
 }> = [
   {
     key: 'objetivo',
     label: 'Objetivo',
     description: 'Qual o objetivo estratégico do projeto para o cliente.',
-    minHeight: 100,
   },
   {
     key: 'publicoAlvo',
     label: 'Público-alvo',
     description: 'Perfil demográfico, comportamental e psicográfico.',
-    minHeight: 100,
   },
   {
     key: 'tomEComunicacao',
     label: 'Tom e comunicação',
     description: 'Personalidade da marca e estilo de comunicação.',
-    minHeight: 100,
   },
   {
     key: 'entregas',
     label: 'Entregas',
     description: 'Peças, formatos e canais a serem produzidos.',
-    minHeight: 120,
   },
   {
     key: 'prazos',
     label: 'Prazos',
     description: 'Datas e marcos importantes.',
-    minHeight: 80,
   },
   {
     key: 'orcamento',
     label: 'Orçamento',
     description: 'Verba disponível ou faixa de investimento.',
-    minHeight: 80,
   },
   {
     key: 'observacoes',
     label: 'Observações',
     description: 'Referências, restrições, contexto adicional.',
-    minHeight: 100,
   },
 ];
 
@@ -140,12 +165,11 @@ export function BriefingEditor({
             {f.label}
           </Label>
           <p className="text-xs text-muted-foreground">{f.description}</p>
-          <Textarea
+          <AutoTextarea
             id={f.key}
             value={values[f.key]}
-            onChange={(e) => update(f.key, e.target.value)}
-            style={{ minHeight: `${f.minHeight}px` }}
-            className="leading-relaxed"
+            onChange={(v) => update(f.key, v)}
+            readOnly={readOnly}
           />
         </div>
       ))}
