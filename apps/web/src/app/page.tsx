@@ -7,10 +7,7 @@ export default function HomePage() {
       <div className="text-center">
         <h1 className="text-5xl font-bold tracking-tight">BRIF</h1>
         <p className="mt-3 text-lg text-muted-foreground">
-          Plataforma white label para agências de publicidade
-        </p>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Sprint 1 · Fundação instalada ✓
+          Plataforma de Gestão de Projetos
         </p>
       </div>
       <div className="flex gap-3">
